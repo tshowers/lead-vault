@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'record/:id',
+    loadComponent: () =>
+      import( './features/preview-page/preview-page.component' ).then( ( m ) => m.PreviewPageComponent ),
+  },
+  {
     path: 'cancel',
     loadComponent: () =>
       import( './features/cancel-page/cancel-page.component' ).then( ( m ) => m.CancelPageComponent ),

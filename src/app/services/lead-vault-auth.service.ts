@@ -72,6 +72,11 @@ export class LeadVaultAuthService {
     return this.auth.currentUser?.uid || '';
   }
 
+  /** Used by the preview/full-record pages to pre-fill the purchaser email for a signed-in user, synchronously. */
+  getCurrentUserEmailSync (): string {
+    return this.auth.currentUser?.email || '';
+  }
+
   async signInWithGoogle (): Promise<User> {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup( this.auth, provider );
