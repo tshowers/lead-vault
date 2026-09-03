@@ -1,0 +1,128 @@
+.cancel-page {
+    min-height: 100vh;
+    padding: 48px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-card {
+    width: 100%;
+    max-width: 760px;
+    padding: 34px 30px;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14px);
+}
+
+.cancel-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(217, 45, 32, 0.16);
+    background: rgba(217, 45, 32, 0.08);
+    color: #b42318;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.cancel-card h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+}
+
+.cancel-copy {
+    margin: 0;
+    max-width: 640px;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    opacity: 0.8;
+}
+
+.cancel-actions {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.primary-action-button {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 16px;
+    background: #00bfff;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 12px 28px rgba(153, 153, 153, 0.22);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+
+.primary-action-button:hover {
+    transform: translateY(-1px);
+    background: #248ad0;
+    box-shadow: 0 16px 32px rgba(153, 153, 153, 0.28);
+}
+
+@media (max-width: 720px) {
+    .cancel-page {
+        padding: 28px 16px;
+        align-items: stretch;
+    }
+
+    .cancel-card {
+        padding: 24px 18px;
+        border-radius: 22px;
+    }
+
+    .cancel-actions {
+        flex-direction: column;
+    }
+
+    .primary-action-button {
+        width: 100%;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .cancel-page {
+        color: rgba(255, 255, 255, 0.94);
+    }
+
+    .cancel-card {
+        border-color: rgba(0, 191, 255, 0.16);
+        background: rgba(26, 37, 53, 0.7);
+        box-shadow: 0 26px 64px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(16px);
+    }
+
+    .cancel-badge {
+        border-color: rgba(240, 68, 56, 0.24);
+        background: rgba(240, 68, 56, 0.14);
+        color: #fda29b;
+    }
+
+    .cancel-copy {
+        opacity: 0.84;
+    }
+
+    .primary-action-button {
+        box-shadow: 0 12px 28px rgba(153, 153, 153, 0.28);
+    }
+}
