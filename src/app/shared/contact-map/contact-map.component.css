@@ -1,0 +1,5 @@
+.map-container {
+    height: 400px; /* Or max-height if you prefer */
+    border-radius: 12px;
+    overflow: hidden; /* Ensures content stays within the rounded corners */
+  }

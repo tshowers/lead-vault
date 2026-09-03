@@ -1,0 +1,219 @@
+<div class="lead-vault-full-record-page">
+    <div class="full-record-shell">
+        <a class="back-link" routerLink="/">← Back to Lead Vault</a>
+        <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <app-preloader [isLoading]="isLoading" message="Loading full record…"></app-preloader>
+        <div class="full-record-card" *ngIf="!isLoading && fullRecord as record">
+            <section class="hero-section">
+                <div class="hero-copy">
+                    <span class="eyebrow">Unlocked lead</span>
+                    <h1>{{ record.companyName || 'Unknown Company' }}</h1>
+                    <p class="subheading">{{ record.fullName || 'Unknown Contact' }}</p>
+                    <p class="supporting-copy"> Full Lead Vault access is active for this record. Contact details, company data, and capabilities are now available to use. </p>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <strong>
+                                <a *ngIf="record.email; else heroMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
+                                    {{ record.email }}
+                                </a>
+                                <ng-template #heroMaskedEmail>
+                                    {{ record.emailMasked || 'No email' }}
+                                </ng-template>
+                            </strong>
+                            <div class="email-meta-row" *ngIf="record.emailChecked || record.emailBlocked">
+                                <span class="cockpit-status-light"
+                                    [class.cockpit-status-light--active]="record.emailChecked && !record.emailBlocked"
+                                    [class.lv-light--blocked]="record.emailBlocked"></span>
+                                <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
+                                <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
+                            </div>
+                            <span>Email</span>
+                        </div>
+                        <div class="hero-stat" *ngIf="record && record.phoneNumbers">
+                            <strong>{{ record.phoneNumbers.length || 0 }}</strong>
+                            <span>Phone numbers</span>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="lv-score-arc lv-score-arc--sm" [style]="'--score: ' + (record.qualityScore || 0)" [attr.data-tier]="getScoreTier(record.qualityScore || 0)">
+                                <span class="lv-score-arc__value">{{ record.qualityScore || 0 }}</span>
+                            </div>
+                            <span>Lead score</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="lead-visual-card primary-card">
+                        <div class="lead-card-top-row">
+                            <div>
+                                <p class="lead-card-company">{{ record.companyName || 'Unknown Company' }}</p>
+                                <h2>{{ record.fullName || 'Unknown Contact' }}</h2>
+                            </div>
+                            <div class="lv-score-arc lv-score-arc--sm" [style]="'--score: ' + (record.qualityScore || 0)" [attr.data-tier]="getScoreTier(record.qualityScore || 0)">
+                                <span class="lv-score-arc__value">{{ record.qualityScore || 0 }}</span>
+                            </div>
+                        </div>
+                        <p class="lead-card-title" *ngIf="record.title">{{ record.title }}</p>
+                        <div class="lead-card-email" *ngIf="record.email || record.emailMasked">
+                            <a *ngIf="record.email; else cardMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
+                                {{ record.email }}
+                            </a>
+                            <ng-template #cardMaskedEmail>
+                                {{ record.emailMasked }}
+                            </ng-template>
+                            <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
+                            <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
+                        </div>
+                        <div class="capabilities preview-capabilities" *ngIf="record.capabilities?.length">
+                            <span class="capability-pill" *ngFor="let capability of record.capabilities">
+                                {{ capability }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="lead-visual-card secondary-card">
+                        <p class="visual-caption">Contact snapshot</p>
+                        <h3>{{ record.city || record.state || record.country || 'Location not listed' }}</h3>
+                        <p class="visual-copy">
+                            <span *ngIf="record.linkedInUrl; else noLinkedIn">LinkedIn available for outreach and research.</span>
+                            <ng-template #noLinkedIn>Direct outreach data is available below.</ng-template>
+                        </p>
+                        <div class="intent-pills">
+                            <span class="intent-pill" *ngIf="record.email || record.emailMasked">Email ready</span>
+                            <span class="intent-pill" *ngIf="record.phoneNumbers?.length">Phone ready</span>
+                            <span class="intent-pill" *ngIf="record.sector">{{ record.sector }}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="recommendation-section">
+                <div class="section-heading">
+                    <span class="eyebrow">Need help approaching this contact?</span>
+                    <h2>Get a recommended approach for $1</h2>
+                </div>
+                <div class="action-card recommendation-card">
+                    <p class="recommendation-copy"> Tell us what you want to do with this contact and we will load the recommendation tied to your purchase. </p>
+                    <div class="recommendation-controls">
+                        <label class="recommendation-label" for="recommendationGoal">What do you want to do?</label>
+                        <select id="recommendationGoal" class="recommendation-select" [ngModel]="recommendationGoal" (ngModelChange)="onRecommendationGoalChange($event)">
+                            <option value="Introduce my service">Introduce my service</option>
+                            <option value="Book a meeting">Book a meeting</option>
+                            <option value="Sell a product">Sell a product</option>
+                            <option value="Start a partnership">Start a partnership</option>
+                            <option value="Recruit">Recruit</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="action-row recommendation-action-row">
+                        <button type="button" class="primary-action-button" [disabled]="recommendationCheckoutInProgress || recommendationLoading" (click)="startRecommendationCheckout()"> Get recommendation for $1 </button>
+                        <button type="button" class="secondary-action-button" [disabled]="recommendationLoading" (click)="loadRecommendation()"> Load recommendation </button>
+                    </div>
+                    <div class="message-stack" *ngIf="recommendationMessage || recommendationErrorMessage">
+                        <p class="action-message" *ngIf="recommendationMessage">
+                            {{ recommendationMessage }}
+                        </p>
+                        <p class="inline-error-message" *ngIf="recommendationErrorMessage">
+                            {{ recommendationErrorMessage }}
+                        </p>
+                    </div>
+                    <div class="recommendation-result-card" *ngIf="recommendation">
+                        <h3>Recommendation</h3>
+                        <p *ngIf="recommendation.summary"><strong>Summary:</strong> {{ recommendation.summary }}</p>
+                        <p *ngIf="recommendation.approach"><strong>Approach:</strong> {{ recommendation.approach }}</p>
+                        <p *ngIf="recommendation.firstMove"><strong>First move:</strong> {{ recommendation.firstMove }}</p>
+                        <p *ngIf="recommendation.caution"><strong>Caution:</strong> {{ recommendation.caution }}</p>
+                        <pre *ngIf="!recommendation.summary && !recommendation.approach && !recommendation.firstMove && !recommendation.caution">{{ recommendation | json }}</pre>
+                    </div>
+                </div>
+            </section>
+            <section class="actions-section">
+                <div class="section-heading">
+                    <span class="eyebrow">Use this lead</span>
+                    <h2>Download or copy</h2>
+                </div>
+                <div class="action-card">
+                    <div class="action-row">
+                        <button type="button" class="secondary-action-button" (click)="downloadCsv()"> Download CSV </button>
+                        <button type="button" class="secondary-action-button" (click)="copyEmail()"> Copy email </button>
+                        <button type="button" class="secondary-action-button" (click)="copyFullRecord()"> Copy full record </button>
+                        <button *ngIf="accessState?.isLoggedIn" type="button" class="primary-action-button" [disabled]="addToToddInProgress" (click)="addToTodd()"> Add to TODD </button>
+                    </div>
+                    <div class="action-row" *ngIf="accessState?.isLoggedIn && leadVaultContact?.email">
+                        <app-email-option-button [contact]="leadVaultContact" (composeInTodd)="onComposeInToddFromLead($event)">
+                        </app-email-option-button>
+                    </div>
+                    <p class="action-message" *ngIf="!accessState?.isLoggedIn">Sign in to add this lead to TODD.</p>
+                    <p class="action-message" *ngIf="accessState?.isLoggedIn && !accessState?.isPaidUser">Free users can keep up to 10 contacts before upgrading.</p>
+                    <div class="message-stack" *ngIf="actionMessage || actionErrorMessage">
+                        <p class="action-message" *ngIf="actionMessage">
+                            {{ actionMessage }}
+                        </p>
+                        <p class="inline-error-message" *ngIf="actionErrorMessage">
+                            {{ actionErrorMessage }}
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="details-section">
+                <div class="section-heading">
+                    <span class="eyebrow">Record details</span>
+                    <h2>Everything unlocked for this lead</h2>
+                </div>
+                <div class="record-grid">
+                    <div class="record-section">
+                        <h3>Contact</h3>
+                        <p *ngIf="record.title"><strong>Title:</strong> {{ record.title }}</p>
+                        <p *ngIf="record.email || record.emailMasked">
+                            <strong>Email:</strong>
+                            <a *ngIf="record.email; else detailMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
+                                {{ record.email }}
+                            </a>
+                            <ng-template #detailMaskedEmail>
+                                {{ record.emailMasked }}
+                            </ng-template>
+                            <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
+                            <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
+                        </p>
+                        <div *ngIf="record.phoneNumbers?.length">
+                            <p *ngFor="let phone of record.phoneNumbers">
+                                <strong>Phone:</strong> {{ phone.phoneNumber || phone }}
+                            </p>
+                        </div>
+                        <p *ngIf="record.linkedInUrl"><strong>LinkedIn:</strong> {{ record.linkedInUrl }}</p>
+                    </div>
+                    <div class="record-section">
+                        <h3>Company</h3>
+                        <p *ngIf="record.company?.name"><strong>Name:</strong> {{ record.company.name }}</p>
+                        <p *ngIf="record.company?.size"><strong>Size:</strong> {{ record.company.size }}</p>
+                        <p *ngIf="record.company?.description"><strong>Description:</strong> {{ record.company.description }}</p>
+                    </div>
+                    <div class="record-section">
+                        <h3>Location</h3>
+                        <p *ngIf="record.city"><strong>City:</strong> {{ record.city }}</p>
+                        <p *ngIf="record.state"><strong>State:</strong> {{ record.state }}</p>
+                        <p *ngIf="record.country"><strong>Country:</strong> {{ record.country }}</p>
+                        <p *ngIf="record.sector"><strong>Sector:</strong> {{ record.sector }}</p>
+                    </div>
+                </div>
+                <div *ngIf="hasMapLocation()" class="mt-2">
+                    <app-contact-map [longitude]="getMapLongitude()!" [latitude]="getMapLatitude()!">
+                    </app-contact-map>
+                </div>
+            </section>
+            <section class="capabilities-section" *ngIf="record.capabilities?.length || record.company?.capabilities?.length">
+                <div class="section-heading">
+                    <span class="eyebrow">Capabilities</span>
+                    <h2>What this company does</h2>
+                </div>
+                <div class="capabilities" *ngIf="record.capabilities?.length">
+                    <span class="capability-pill" *ngFor="let capability of record.capabilities">
+                        {{ capability }}
+                    </span>
+                </div>
+                <div class="capabilities company-capabilities" *ngIf="record.company?.capabilities?.length">
+                    <span class="capability-pill" *ngFor="let capability of record.company.capabilities">
+                        {{ capability }}
+                    </span>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

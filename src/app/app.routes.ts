@@ -12,6 +12,11 @@ export const routes: Routes = [
       import( './features/preview-page/preview-page.component' ).then( ( m ) => m.PreviewPageComponent ),
   },
   {
+    path: 'full/:id',
+    loadComponent: () =>
+      import( './features/full-record-page/full-record-page.component' ).then( ( m ) => m.FullRecordPageComponent ),
+  },
+  {
     path: 'cancel',
     loadComponent: () =>
       import( './features/cancel-page/cancel-page.component' ).then( ( m ) => m.CancelPageComponent ),
