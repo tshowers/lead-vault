@@ -1,0 +1,47 @@
+<div class="lead-vault-success-page">
+    <div class="success-shell">
+        <a class="back-link" routerLink="/">← Back to Lead Vault</a>
+        <div class="success-card">
+            <section class="hero-section">
+                <div class="hero-copy">
+                    <span class="eyebrow">Lead unlocked</span>
+                    <h1>Access granted</h1>
+                    <p class="subheading" *ngIf="!errorMessage"> Your Lead Vault purchase is complete. </p>
+                    <p class="supporting-copy" *ngIf="!errorMessage"> We are verifying your access and preparing the full contact record. Once confirmed, the record will open automatically. </p>
+                    <p class="status-message" *ngIf="isLoading && !errorMessage">
+                        {{ statusMessage }}
+                    </p>
+                    <p class="status-message" *ngIf="!isLoading && !errorMessage">
+                        {{ statusMessage }}
+                    </p>
+                    <p class="error-message" *ngIf="errorMessage">
+                        {{ errorMessage }}
+                    </p>
+                    <div class="hero-actions" *ngIf="errorMessage">
+                        <a class="secondary-link" routerLink="/"> Return to search </a>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="lead-visual-card primary-card">
+                        <div class="lead-card-top-row">
+                            <div>
+                                <p class="lead-card-company">Lead Vault</p>
+                                <h2>Purchase confirmed</h2>
+                            </div>
+                        </div>
+                        <p class="visual-copy"> Your access entitlement is being verified and attached to your email. </p>
+                        <div class="intent-pills">
+                            <span class="intent-pill">Access granted</span>
+                            <span class="intent-pill">Record unlocking</span>
+                        </div>
+                    </div>
+                    <div class="lead-visual-card secondary-card">
+                        <p class="visual-caption">Next step</p>
+                        <h3>Opening full record</h3>
+                        <p class="visual-copy"> After verification completes, the Lead Vault record will open with full contact and company information. </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

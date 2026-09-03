@@ -1,0 +1,47 @@
+<div class="lead-vault-success-page">
+    <div class="success-shell">
+        <a class="back-link" routerLink="/">← Back to Lead Vault</a>
+        <div class="success-card">
+            <section class="hero-section">
+                <div class="hero-copy">
+                    <span class="eyebrow">Subscription activated</span>
+                    <h1>Unlimited access</h1>
+                    <p class="subheading" *ngIf="!errorMessage">Your Lead Vault Unlimited subscription is active.</p>
+                    <p class="supporting-copy" *ngIf="!errorMessage">You now have unlimited access to all Lead Vault contacts and can include them directly in campaigns.</p>
+                    <p class="status-message" *ngIf="isLoading && !errorMessage">
+                        {{ statusMessage }}
+                    </p>
+                    <p class="status-message" *ngIf="!isLoading && !errorMessage">
+                        {{ statusMessage }}
+                    </p>
+                    <p class="error-message" *ngIf="errorMessage">
+                        {{ errorMessage }}
+                    </p>
+                    <div class="hero-actions" *ngIf="errorMessage">
+                        <a class="secondary-link" routerLink="/">Return to Lead Vault</a>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="lead-visual-card primary-card">
+                        <div class="lead-card-top-row">
+                            <div>
+                                <p class="lead-card-company">Lead Vault</p>
+                                <h2>Subscription confirmed</h2>
+                            </div>
+                        </div>
+                        <p class="visual-copy">Your unlimited access entitlement is now active on your account.</p>
+                        <div class="intent-pills">
+                            <span class="intent-pill">Unlimited reveals</span>
+                            <span class="intent-pill">Campaign integration</span>
+                        </div>
+                    </div>
+                    <div class="lead-visual-card secondary-card">
+                        <p class="visual-caption">Next step</p>
+                        <h3>Start searching</h3>
+                        <p class="visual-copy">Browse and reveal any lead vault contact — or include lead vault contacts directly in your next campaign.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
