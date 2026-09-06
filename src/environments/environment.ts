@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   COMPANY_NAME: 'Lead Vault',
-  PLATFORM_URL: 'https://leadvault.taliferro.tech',
+  PLATFORM_URL: 'https://lead-vault.taliferro.tech',
   backendURL: 'https://api.taliferro.tech/api',
   apiKey: 'AIzaSyCAAgRd8tq9PXkPKE2zddseYtZ-Xx_P8mU',
   linkPreview: '37bd4a175494ee23afba7d8a117c5f77',
