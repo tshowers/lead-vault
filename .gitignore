@@ -28,6 +28,12 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Generated at build/serve time - see scripts/generate-version.js
+/src/app/version.ts
+
+# Firebase
+/.firebase
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

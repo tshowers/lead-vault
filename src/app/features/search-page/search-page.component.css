@@ -972,6 +972,18 @@
     object-fit: contain;
 }
 
+.lead-vault-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.app-version {
+    color: #94a0ac;
+    font-size: 0.76rem;
+    font-variant-numeric: tabular-nums;
+}
+
 .lead-vault-console {
     padding: 28px;
     border: 1px solid rgba(19, 25, 33, 0.09);
@@ -1316,6 +1328,10 @@
     .mode-switch {
         color: #9aadc1;
         background: #1a2535;
+    }
+
+    .app-version {
+        color: #5c6b7a;
     }
 
     .mode-switch .active-label,

@@ -6,6 +6,7 @@ import { LeadVaultAssistantSignalService } from '../../services/lead-vault-assis
 import { LeadVaultApiService } from '../../services/lead-vault-api.service';
 import { Observable, from, of } from 'rxjs';
 import { catchError, concatMap, map, toArray } from 'rxjs/operators';
+import { VERSION } from '../../version';
 
 /**
  * TRIM, not rewrite - the largest component in this extraction (2,143
@@ -66,6 +67,7 @@ type LeadVaultMode = 'validate' | 'search';
 export class SearchPageComponent implements OnInit, OnDestroy {
   /** The monorepo's real production domain - see header comment. */
   readonly toddHomeUrl = 'https://todd.taliferro.tech';
+  readonly appVersion = VERSION;
 
   readonly placeholderExamples: string[] = [
     'Who is looking to buy technology services',

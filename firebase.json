@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "lead-vault",
+    "public": "dist/lead-vault/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
