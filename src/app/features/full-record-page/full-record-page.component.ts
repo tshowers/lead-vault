@@ -296,6 +296,10 @@ export class FullRecordPageComponent implements OnInit {
     }
   }
 
+  signInToTodd (): void {
+    this.authService.signIn( `/full/${this.recordId}` );
+  }
+
   async addToTodd (): Promise<void> {
     this.actionErrorMessage = '';
     this.actionMessage = '';
@@ -303,7 +307,7 @@ export class FullRecordPageComponent implements OnInit {
     await this.refreshAccessState();
 
     if ( !this.accessState?.isLoggedIn ) {
-      this.actionErrorMessage = 'Sign in to add this lead to TODD.';
+      this.authService.signIn( `/full/${this.recordId}` );
       return;
     }
 

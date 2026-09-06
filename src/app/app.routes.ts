@@ -31,4 +31,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import( './features/unlimited-success-page/unlimited-success-page.component' ).then( ( m ) => m.UnlimitedSuccessPageComponent ),
   },
+  {
+    path: 'auth/callback',
+    loadComponent: () =>
+      import( './features/auth-callback/auth-callback.component' ).then( ( m ) => m.AuthCallbackComponent ),
+  },
 ];

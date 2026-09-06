@@ -140,7 +140,7 @@
                         <app-email-option-button [contact]="leadVaultContact" (composeInTodd)="onComposeInToddFromLead($event)">
                         </app-email-option-button>
                     </div>
-                    <p class="action-message" *ngIf="!accessState?.isLoggedIn">Sign in to add this lead to TODD.</p>
+                    <button *ngIf="!accessState?.isLoggedIn" type="button" class="primary-action-button" (click)="signInToTodd()">Sign in to add this lead to TODD</button>
                     <p class="action-message" *ngIf="accessState?.isLoggedIn && !accessState?.isPaidUser">Free users can keep up to 10 contacts before upgrading.</p>
                     <div class="message-stack" *ngIf="actionMessage || actionErrorMessage">
                         <p class="action-message" *ngIf="actionMessage">

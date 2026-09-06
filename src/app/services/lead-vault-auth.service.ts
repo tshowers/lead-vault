@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   Auth,
   getAuth,
-  GoogleAuthProvider,
   onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithCustomToken,
   signOut,
   User,
 } from 'firebase/auth';
@@ -77,14 +75,28 @@ export class LeadVaultAuthService {
     return this.auth.currentUser?.email || '';
   }
 
-  async signInWithGoogle (): Promise<User> {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup( this.auth, provider );
-    return result.user;
+  signIn ( returnUrl?: string ): void {
+    const state = crypto.randomUUID();
+    sessionStorage.setItem( 'lead_vault_hosted_login_pending', JSON.stringify( { state, returnUrl } ) );
+    const params = new URLSearchParams( { client: 'lead-vault-web', state } );
+    window.location.href = `https://todd.taliferro.tech/login?${params.toString()}`;
   }
 
-  async signInWithEmail ( email: string, password: string ): Promise<User> {
-    const result = await signInWithEmailAndPassword( this.auth, email, password );
+  consumePendingLogin ( state: string | null ): { returnUrl?: string } | null {
+    const raw = sessionStorage.getItem( 'lead_vault_hosted_login_pending' );
+    sessionStorage.removeItem( 'lead_vault_hosted_login_pending' );
+    if ( !raw || !state ) return null;
+
+    try {
+      const pending = JSON.parse( raw ) as { state: string; returnUrl?: string };
+      return pending.state === state ? { returnUrl: pending.returnUrl } : null;
+    } catch {
+      return null;
+    }
+  }
+
+  async signInWithCustomToken ( token: string ): Promise<User> {
+    const result = await signInWithCustomToken( this.auth, token );
     return result.user;
   }
 
