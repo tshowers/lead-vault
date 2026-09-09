@@ -1,3 +1,5 @@
+@import "@taliferro/ui/styles/controls.css";
+
 /* You can add global styles to this file, and also import other style files */
 
 /*
@@ -10,4 +12,23 @@
 :root {
   --tl-blue: #00bfff;
   --tl-blue-mid: #0095cc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+    background: #0b1119;
+    color: #f8fafc;
+  }
+
+  app-root {
+    display: block;
+    min-height: 100vh;
+    background: #0b1119;
+  }
 }

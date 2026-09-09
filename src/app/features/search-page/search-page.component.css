@@ -703,6 +703,7 @@
 @media (prefers-color-scheme: dark) {
     .lead-vault-search-page {
         color: rgba(255, 255, 255, 0.94);
+        background: #0b1119;
     }
 
     .eyebrow {

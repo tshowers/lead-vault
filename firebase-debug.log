@@ -1,0 +1,187 @@
+[debug] [2026-09-09T08:26:59.179Z] ----------------------------------------------------------------------
+[debug] [2026-09-09T08:26:59.181Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only hosting
+[debug] [2026-09-09T08:26:59.181Z] CLI Version:   15.15.0
+[debug] [2026-09-09T08:26:59.181Z] Platform:      darwin
+[debug] [2026-09-09T08:26:59.181Z] Node Version:  v22.13.1
+[debug] [2026-09-09T08:26:59.181Z] Time:          Wed Sep 09 2026 01:26:59 GMT-0700 (Pacific Daylight Time)
+[debug] [2026-09-09T08:26:59.181Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-09-09T08:27:00.088Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-09T08:27:00.089Z] > authorizing via signed-in user (ty.showers@gmail.com)
+[debug] [2026-09-09T08:27:00.089Z] [iam] checking project taliferrotech for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-09-09T08:27:00.090Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.090Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.090Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/taliferrotech:testIamPermissions [none]
+[debug] [2026-09-09T08:27:00.090Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/taliferrotech:testIamPermissions  x-goog-user-project=taliferrotech
+[debug] [2026-09-09T08:27:00.090Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/taliferrotech:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-09-09T08:27:00.278Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/taliferrotech:testIamPermissions 200
+[debug] [2026-09-09T08:27:00.279Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/taliferrotech:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-09-09T08:27:00.279Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.279Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.279Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/taliferrotech [none]
+[debug] [2026-09-09T08:27:00.667Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/taliferrotech 200
+[debug] [2026-09-09T08:27:00.667Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/taliferrotech {"projectId":"taliferrotech","projectNumber":"633736143723","displayName":"TaliferroTech","name":"projects/taliferrotech","resources":{"hostingSite":"taliferrotech","locationId":"us-central"},"state":"ACTIVE","labels":{"firebase":"enabled","firebaseworkflows/environment":"production"},"etag":"1_ca656f64-2674-418e-956d-3a4896c51359"}
+[info] 
+[info] === Deploying to 'taliferrotech'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-09-09T08:27:00.669Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.669Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:00.669Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions [none]
+[debug] [2026-09-09T08:27:00.669Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-09-09T08:27:01.719Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions 200
+[debug] [2026-09-09T08:27:01.720Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions {"name":"projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[lead-vault]: beginning deploy... 
+[info] i  hosting[lead-vault]: found 32 files in dist/lead-vault/browser 
+[debug] [2026-09-09T08:27:01.728Z] [hosting] uploading with 200 concurrency
+[debug] [2026-09-09T08:27:01.771Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:01.771Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:01.772Z] [hosting] hash cache [ZGlzdC9sZWFkLXZhdWx0L2Jyb3dzZXI] stored for 32 files
+[debug] [2026-09-09T08:27:01.772Z] [hosting][hash queue][FINAL] {"max":40,"min":7,"avg":13.28125,"active":0,"complete":32,"success":32,"errored":0,"retried":0,"total":32,"elapsed":43}
+[debug] [2026-09-09T08:27:01.773Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe:populateFiles [none]
+[debug] [2026-09-09T08:27:01.773Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe:populateFiles {"files":{"/polyfills-5CFQRCPP.js":"02fae82bf075da43b23af9fc7cf0bf387843c13dfdc835f78df7bd29c1d072ba","/chunk-YCDXFSZS.js":"dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79","/chunk-V36BKXTY.js":"a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c","/index.html":"fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa","/main-3NMHZN42.js":"a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a","/chunk-JBJQRFYG.js":"c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0","/chunk-S3QX4VNY.js":"b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720","/chunk-FN5DDHWM.js":"5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133","/chunk-GYNMQ2AH.js":"b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed","/chunk-JEX3H24A.js":"805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85","/chunk-KFMB35BV.js":"ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae","/chunk-OX2AB53X.js":"b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5","/chunk-4CQHGJR2.js":"18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077","/chunk-C2XPNDOH.js":"85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6","/media/fa-v4compatibility-4GXT74DT.woff2":"a89195f90e3cfa88fb0b591a71c1fc2bfaf1f144d9e50717e4d030256480938d","/chunk-KH5FGKDA.js":"8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2","/media/fa-regular-400-NCGHE5NP.woff2":"129589c2b868b36a07df96fc7895e5bf4796d8a4d853fd58c5a62ba0fcf1bb46","/scripts-TTWY4XDY.js":"98f986c8e126f1245ed812819786cb174d6242034653cc99e0c0cd7c489fe7ff","/assets/lead-vault/hero.webp":"c2680e9d69f27dcb2d0a454b971e88e345c4a59f212a95923d480fbac5570719","/favicon.ico":"02a0ade866e8e46e443d83084a65916f0cf4364581c6db6ac9b46d36935674d8","/assets/seo/lead-vault-card.webp":"e944bce565438bed05e7212dcbdfffcd792c86bee2d39fc4b3638b128b9dcf97","/assets/lead-vault/card.webp":"e944bce565438bed05e7212dcbdfffcd792c86bee2d39fc4b3638b128b9dcf97","/media/fa-solid-900-EFITDVWS.woff2":"ea3b91c2f935276798c9627eb6e0dfa207f9c32cb98ddf41dd8dc47529888218","/media/fa-brands-400-LA6RBN2H.woff2":"f2c6ac5ec5412bedec96a9dcc3fe0f5278726713ce516ea4d1a3cbb6ba29b563","/chunk-VMO2HDGD.js":"24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1","/assets/seo/lead-vault-icon.png":"9f890cd445f78ca06bebfc1f26e8df6ebcf947db61f566700826c7b1cbc22efb","/assets/lead-vault/logo.png":"9f890cd445f78ca06bebfc1f26e8df6ebcf947db61f566700826c7b1cbc22efb","/assets/lead-vault/logo-icon.png":"9f890cd445f78ca06bebfc1f26e8df6ebcf947db61f566700826c7b1cbc22efb","/styles-YCMP6OOO.css":"39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877","/chunk-ZLCUNTHX.js":"7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849","/assets/lead-vault/lead-vault.png":"b07d848d7e691eed54cf13798b9c3749e85cc3e0a46c5ff6fbe692e2e0def5de","/assets/lead-vault-readme-banner.png":"6dfdc02c468eb399a51ddcd46df758bbdfa85736e4cd34973e5fdadac05caab1"}}
+[debug] [2026-09-09T08:27:02.138Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe:populateFiles 200
+[debug] [2026-09-09T08:27:02.139Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe:populateFiles {"uploadRequiredHashes":["39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877","a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a","a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c","5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133","24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1","ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae","b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5","8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2","fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa","dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79","b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed","b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720","85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6","7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849","805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85","18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077","c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files"}
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.139Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.140Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.140Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.140Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.141Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.142Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:02.143Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877 [none]
+[debug] [2026-09-09T08:27:02.143Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877 [stream]
+[debug] [2026-09-09T08:27:02.144Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a [none]
+[debug] [2026-09-09T08:27:02.144Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a [stream]
+[debug] [2026-09-09T08:27:02.145Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c [none]
+[debug] [2026-09-09T08:27:02.145Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c [stream]
+[debug] [2026-09-09T08:27:02.148Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133 [none]
+[debug] [2026-09-09T08:27:02.149Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133 [stream]
+[debug] [2026-09-09T08:27:02.151Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1 [none]
+[debug] [2026-09-09T08:27:02.151Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1 [stream]
+[debug] [2026-09-09T08:27:02.152Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae [none]
+[debug] [2026-09-09T08:27:02.152Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae [stream]
+[debug] [2026-09-09T08:27:02.154Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5 [none]
+[debug] [2026-09-09T08:27:02.154Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5 [stream]
+[debug] [2026-09-09T08:27:02.155Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2 [none]
+[debug] [2026-09-09T08:27:02.155Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2 [stream]
+[debug] [2026-09-09T08:27:02.158Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa [none]
+[debug] [2026-09-09T08:27:02.158Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa [stream]
+[debug] [2026-09-09T08:27:02.159Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79 [none]
+[debug] [2026-09-09T08:27:02.159Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79 [stream]
+[debug] [2026-09-09T08:27:02.160Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed [none]
+[debug] [2026-09-09T08:27:02.160Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed [stream]
+[debug] [2026-09-09T08:27:02.161Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720 [none]
+[debug] [2026-09-09T08:27:02.163Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720 [stream]
+[debug] [2026-09-09T08:27:02.164Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6 [none]
+[debug] [2026-09-09T08:27:02.164Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6 [stream]
+[debug] [2026-09-09T08:27:02.165Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849 [none]
+[debug] [2026-09-09T08:27:02.166Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849 [stream]
+[debug] [2026-09-09T08:27:02.168Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85 [none]
+[debug] [2026-09-09T08:27:02.168Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85 [stream]
+[debug] [2026-09-09T08:27:02.169Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077 [none]
+[debug] [2026-09-09T08:27:02.169Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077 [stream]
+[debug] [2026-09-09T08:27:02.171Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0 [none]
+[debug] [2026-09-09T08:27:02.172Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0 [stream]
+[debug] [2026-09-09T08:27:02.173Z] [hosting][populate queue][FINAL] {"max":371,"min":371,"avg":371,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":402}
+[debug] [2026-09-09T08:27:02.173Z] [hosting] uploads queued: 17
+[debug] [2026-09-09T08:27:02.980Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5 200
+[debug] [2026-09-09T08:27:02.980Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b340e2b165814f7f5559748563dd0f547a5a51fbfc1210fba1e23b421c464bb5 [stream]
+[debug] [2026-09-09T08:27:03.033Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877 200
+[debug] [2026-09-09T08:27:03.033Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/39024e956e051840cc6c172366d159aa512cee59a5ab67ba1000b3086e86e877 [stream]
+[debug] [2026-09-09T08:27:03.049Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c 200
+[debug] [2026-09-09T08:27:03.049Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a021c1058053ce15903d9a02757bb93ab6aa5b67d18de532ae643a98f339ac5c [stream]
+[debug] [2026-09-09T08:27:03.152Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720 200
+[debug] [2026-09-09T08:27:03.153Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b04fcabb9e8d90b687184dd9cf0f0e4c079dd4e1cb3db1ac2100c0578fb5a720 [stream]
+[debug] [2026-09-09T08:27:03.186Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2 200
+[debug] [2026-09-09T08:27:03.186Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/8d265f0aa4175a84d0fcc7c784633d65481689efd27f9020e5bb5ea2a513aae2 [stream]
+[debug] [2026-09-09T08:27:03.187Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85 200
+[debug] [2026-09-09T08:27:03.187Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/805f8cd66f49c0af885d969986889f94b78b1d5c3d761a707d25893a60b8ef85 [stream]
+[debug] [2026-09-09T08:27:03.188Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79 200
+[debug] [2026-09-09T08:27:03.188Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/dc9a3efcf9e7946000f16c6f472efc9c3a2946e970b14a27459c2ba53b123b79 [stream]
+[debug] [2026-09-09T08:27:03.189Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed 200
+[debug] [2026-09-09T08:27:03.189Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/b48d5ced87dcde9b28d3956d38d29fc3547236f05958184f8fd876b48f9208ed [stream]
+[debug] [2026-09-09T08:27:03.189Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae 200
+[debug] [2026-09-09T08:27:03.189Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/ac717f069c18500121820d855603fdb6b864d33388ef0c66ab5c74d9d65fbaae [stream]
+[debug] [2026-09-09T08:27:03.344Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa 200
+[debug] [2026-09-09T08:27:03.344Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/fc4e5b4a6b76d816f38968918d8932d165855c4f9ca61eaab1d5f1432f3ce1aa [stream]
+[debug] [2026-09-09T08:27:03.345Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133 200
+[debug] [2026-09-09T08:27:03.345Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/5b091e9d129e14c26c838996f69e9a5f023a57fe19c84d89a5fc5b2879376133 [stream]
+[debug] [2026-09-09T08:27:03.346Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6 200
+[debug] [2026-09-09T08:27:03.346Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/85f82d1becd49abf29fabf0d5380159d0b595397701ec23d1edb9da45dabbee6 [stream]
+[debug] [2026-09-09T08:27:03.346Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a 200
+[debug] [2026-09-09T08:27:03.346Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/a1edc07692efec939922e444803adbea177425efaa6cad5ceea850490f67365a [stream]
+[debug] [2026-09-09T08:27:03.392Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1 200
+[debug] [2026-09-09T08:27:03.393Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/24f9e38a69a4c1c4714699ece824f45e04927b7783f7d97d6f5365dab61609b1 [stream]
+[debug] [2026-09-09T08:27:03.393Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849 200
+[debug] [2026-09-09T08:27:03.393Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/7c79e4bb56461b211ea213886d6eae99c0a79f7cbd608edcf0db4acb06fb2849 [stream]
+[debug] [2026-09-09T08:27:03.394Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0 200
+[debug] [2026-09-09T08:27:03.394Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/c690a3c9a8af15304fd67c71aac5cd1ea13385c67f4596edac22fa957adbe4f0 [stream]
+[debug] [2026-09-09T08:27:03.496Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077 200
+[debug] [2026-09-09T08:27:03.496Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lead-vault/versions/d05e6bf1a51aaabe/files/18e53b6a04209810666e9e60730f8bd47bdfa46d6da03c1c70b9ba8fe34e0077 [stream]
+[debug] [2026-09-09T08:27:03.496Z] [hosting][upload queue][FINAL] {"max":1354,"min":839,"avg":1107.1176470588234,"active":0,"complete":17,"success":17,"errored":0,"retried":0,"total":17,"elapsed":1357}
+[info] i  hosting: upload complete 
+[info] ✔  hosting[lead-vault]: file upload complete 
+[debug] [2026-09-09T08:27:03.497Z] [hosting] deploy completed after 1776ms
+[debug] [2026-09-09T08:27:03.497Z] [
+  {
+    "config": {
+      "site": "lead-vault",
+      "public": "dist/lead-vault/browser",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    "version": "projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe"
+  }
+]
+[info] i  hosting[lead-vault]: finalizing version... 
+[debug] [2026-09-09T08:27:03.498Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:03.498Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:03.498Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions/d05e6bf1a51aaabe updateMask=status%2Cconfig
+[debug] [2026-09-09T08:27:03.498Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions/d05e6bf1a51aaabe {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2026-09-09T08:27:03.807Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions/d05e6bf1a51aaabe 200
+[debug] [2026-09-09T08:27:03.808Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/versions/d05e6bf1a51aaabe {"name":"projects/633736143723/sites/lead-vault/versions/d05e6bf1a51aaabe","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2026-09-09T08:27:01.250221Z","createUser":{"email":"ty.showers@gmail.com"},"finalizeTime":"2026-09-09T08:27:03.764855Z","finalizeUser":{"email":"ty.showers@gmail.com"}}
+[debug] [2026-09-09T08:27:03.808Z] [hosting] finalized version for lead-vault:[object Object]
+[info] ✔  hosting[lead-vault]: version finalized 
+[info] i  hosting[lead-vault]: releasing new version... 
+[debug] [2026-09-09T08:27:03.808Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:03.808Z] Checked if tokens are valid: true, expires at: 1788944556431
+[debug] [2026-09-09T08:27:03.808Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/channels/live/releases versionName=projects%2F633736143723%2Fsites%2Flead-vault%2Fversions%2Fd05e6bf1a51aaabe
+[debug] [2026-09-09T08:27:03.808Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/channels/live/releases {}
+[debug] [2026-09-09T08:27:04.237Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lead-vault/channels/live/releases 200

@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@fortawesome/fontawesome-free": "^7.3.1",
+    "@taliferro/ui": "file:../../taliferro-ui",
     "bootstrap": "^5.3.8",
     "file-saver": "^2.0.5",
     "firebase": "^12.18.0",
