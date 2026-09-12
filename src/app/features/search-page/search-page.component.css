@@ -1010,12 +1010,26 @@
     color: #111923;
 }
 
+.mode-switch .disabled-label {
+    color: #aebbc6;
+    text-decoration: line-through;
+}
+
 .ios-toggle {
     position: relative;
     display: inline-block;
     width: 48px;
     height: 28px;
     cursor: pointer;
+}
+
+.ios-toggle input:disabled {
+    cursor: not-allowed;
+}
+
+.ios-toggle input:disabled+.ios-toggle-track {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .ios-toggle input {

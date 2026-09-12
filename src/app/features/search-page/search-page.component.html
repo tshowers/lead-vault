@@ -1,20 +1,18 @@
 <main class="lead-vault-search-page">
     <div class="lead-vault-shell">
         <header class="lead-vault-header">
-            <a class="lead-vault-home-link" [href]="toddHomeUrl" aria-label="Back to TODD Home">← TODD Home</a>
             <img src="assets/lead-vault/logo.png" alt="Lead Vault" class="lead-vault-logo">
         </header>
-
         <section class="lead-vault-console" aria-label="Lead Vault">
             <div class="mode-switch" role="group" aria-label="Lead Vault mode">
-                <span [class.active-label]="mode === 'validate'">Validate Email</span>
+                <span [class.active-label]="mode === 'validate'" [class.disabled-label]="validateEmailUnavailable">Validate Email</span>
                 <label class="ios-toggle">
-                    <input type="checkbox" [checked]="mode === 'search'" (change)="onModeChange($any($event.target).checked ? 'search' : 'validate')" aria-label="Switch between email validation and Lead Vault search">
+                    <input type="checkbox" [checked]="mode === 'search'" [disabled]="validateEmailUnavailable" (change)="onModeChange($any($event.target).checked ? 'search' : 'validate')" aria-label="Switch between email validation and Lead Vault search">
                     <span class="ios-toggle-track" aria-hidden="true"></span>
                 </label>
                 <span [class.active-label]="mode === 'search'">Search Lead Vault</span>
             </div>
-
+            <p class="helper-copy" *ngIf="validateEmailUnavailable">Email validation is temporarily unavailable.</p>
             <form class="lead-vault-form" (ngSubmit)="submitPrimary()">
                 <label for="leadVaultQuery">{{ mode === 'validate' ? 'Enter email address' : 'Search Lead Vault' }}</label>
                 <div class="input-row">
@@ -26,9 +24,7 @@
                 <p class="helper-copy" *ngIf="mode === 'validate'">See if an email address is valid.</p>
                 <p class="helper-copy" *ngIf="mode === 'search'">Search researched contacts by company, sector, capability, or buyer need.</p>
             </form>
-
             <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
-
             <section class="validation-result" *ngIf="validationResult as validation" [attr.data-state]="validationState" aria-live="polite">
                 <div class="validation-icon" aria-hidden="true">{{ validationIcon }}</div>
                 <div class="validation-copy">
@@ -37,7 +33,6 @@
                 </div>
                 <div class="validation-score" aria-label="Validation confidence">{{ validation.score }}%</div>
             </section>
-
             <section class="matched-lead" *ngIf="validationResult?.record as record">
                 <div>
                     <p class="eyebrow">Lead found</p>
@@ -47,7 +42,6 @@
                 </div>
                 <button type="button" class="secondary-action" (click)="unlockValidationRecord(record)">Review contact</button>
             </section>
-
             <section class="search-results" *ngIf="mode === 'search' && results.length > 0">
                 <a class="search-result" *ngFor="let result of results; trackBy: trackByResultId" [routerLink]="['/record', result.id]">
                     <div>
@@ -59,7 +53,6 @@
                     <div class="result-score">{{ result.qualityScore || 0 }}<small>fit</small></div>
                 </a>
             </section>
-
             <section class="empty-search" *ngIf="mode === 'search' && showRecoveryState">
                 <p>No matching contacts found.</p>
                 <div class="recovery-pill-list">
@@ -67,7 +60,6 @@
                 </div>
             </section>
         </section>
-
         <footer class="lead-vault-footer">
             <span class="app-version" [title]="appVersion.buildDate">v{{ appVersion.version }} ({{ appVersion.commit }})</span>
         </footer>

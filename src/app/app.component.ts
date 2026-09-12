@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 
 import { ToastComponent } from './shared/toast/toast.component';
 import { CommandPaletteComponent } from './shared/page/command-palette/command-palette.component';
+import { PlatformMenuComponent } from './shared/platform-menu/platform-menu.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastComponent, CommandPaletteComponent],
+  imports: [RouterOutlet, ToastComponent, CommandPaletteComponent, PlatformMenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

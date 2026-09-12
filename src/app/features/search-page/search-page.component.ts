@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeadVaultAssistantSignalService } from '../../services/lead-vault-assistant-signal.service';
 import { LeadVaultApiService } from '../../services/lead-vault-api.service';
-import { Observable, from, of } from 'rxjs';
+import { LeadVaultAuthService } from '../../services/lead-vault-auth.service';
+import { Observable, firstValueFrom, from, of } from 'rxjs';
 import { catchError, concatMap, map, toArray } from 'rxjs/operators';
 import { VERSION } from '../../version';
 
@@ -96,6 +97,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   searchQuery = '';
   mode: LeadVaultMode = 'validate';
+  /** True once a validate-email attempt reports the shared credit/daily
+   * budget is exhausted - locks the mode to 'search' for the rest of the
+   * session rather than letting the user keep hitting a dead endpoint. */
+  validateEmailUnavailable = false;
   isLoading = false;
   hasSearched = false;
   errorMessage = '';
@@ -119,6 +124,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly assistantBus: LeadVaultAssistantSignalService,
+    private readonly authService: LeadVaultAuthService,
   ) { }
 
   ngOnInit (): void {
@@ -325,6 +331,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   onModeChange ( mode: LeadVaultMode ): void {
+    if ( mode === 'validate' && this.validateEmailUnavailable ) return;
     this.mode = mode;
     this.hasSearched = false;
     this.errorMessage = '';
@@ -343,20 +350,37 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.search();
   }
 
-  validateEmail (): void {
+  async validateEmail (): Promise<void> {
     const email = ( this.searchQuery || '' ).trim().toLowerCase();
     this.hasSearched = true;
     this.errorMessage = '';
     this.validationResult = null;
     this.results = [];
 
+    if ( this.validateEmailUnavailable ) {
+      this.mode = 'search';
+      return;
+    }
+
     if ( !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test( email ) ) {
       this.errorMessage = 'Enter a complete email address.';
       return;
     }
 
+    const isLoggedIn = await firstValueFrom( this.authService.isLoggedIn() );
+    if ( !isLoggedIn ) {
+      this.authService.signIn( this.router.url );
+      return;
+    }
+
+    const idToken = await this.authService.getIdToken();
+    if ( !idToken ) {
+      this.authService.signIn( this.router.url );
+      return;
+    }
+
     this.isLoading = true;
-    this.leadVaultService.validateEmail( email ).subscribe( {
+    this.leadVaultService.validateEmail( email, idToken ).subscribe( {
       next: ( response ) => {
         this.validationResult = {
           verdict: String( response?.verdict || 'Invalid' ),
@@ -369,7 +393,17 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       },
       error: ( error ) => {
         this.isLoading = false;
-        this.errorMessage = error?.error?.message || error?.message || 'Email validation failed.';
+        const code = error?.error?.code;
+
+        if ( code === 'daily_limit_exceeded' || code === 'insufficient_credits' ) {
+          this.validateEmailUnavailable = true;
+          this.mode = 'search';
+          this.errorMessage = 'Email validation is temporarily unavailable - try Search Lead Vault instead.';
+        } else if ( error?.status === 401 ) {
+          this.errorMessage = 'Your sign-in expired. Please sign in again.';
+        } else {
+          this.errorMessage = error?.error?.message || error?.message || 'Email validation failed.';
+        }
         this.publishPageContext();
       }
     } );

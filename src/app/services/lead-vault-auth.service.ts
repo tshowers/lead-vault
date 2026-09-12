@@ -70,6 +70,11 @@ export class LeadVaultAuthService {
     return this.auth.currentUser?.uid || '';
   }
 
+  /** Firebase ID token for the signed-in user, or null if signed out. */
+  async getIdToken (): Promise<string | null> {
+    return this.auth.currentUser?.getIdToken() ?? null;
+  }
+
   /** Used by the preview/full-record pages to pre-fill the purchaser email for a signed-in user, synchronously. */
   getCurrentUserEmailSync (): string {
     return this.auth.currentUser?.email || '';

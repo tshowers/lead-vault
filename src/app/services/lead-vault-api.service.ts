@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -44,12 +44,18 @@ export class LeadVaultApiService {
     }>( this.buildApiUrl( '/lead-vault/search' ), request || {} );
   }
 
-  validateEmail ( email: string ): Observable<{
+  /**
+   * Requires a signed-in TODD user - this now burns a real, paid email-
+   * validation credit per call, so `idToken` (from
+   * LeadVaultAuthService.getIdToken()) is required, not optional.
+   */
+  validateEmail ( email: string, idToken: string ): Observable<{
     success: boolean;
     verdict: 'Valid' | 'Risky' | 'Invalid' | string;
     score: number;
     matched: boolean;
     record?: any;
+    code?: string;
     message?: string;
   }> {
     return this.http.post<{
@@ -58,9 +64,12 @@ export class LeadVaultApiService {
       score: number;
       matched: boolean;
       record?: any;
+      code?: string;
       message?: string;
     }>( this.buildApiUrl( '/lead-vault/validate-email' ), {
       email: this.normalizeEmail( email )
+    }, {
+      headers: new HttpHeaders( { Authorization: `Bearer ${idToken}` } )
     } );
   }
 
