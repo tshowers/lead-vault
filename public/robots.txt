@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /record/
+Disallow: /full/
+Disallow: /auth/callback
+Disallow: /success
+Disallow: /cancel
+Disallow: /unlimited-success
+
+Sitemap: https://lead-vault.taliferro.tech/sitemap.xml
