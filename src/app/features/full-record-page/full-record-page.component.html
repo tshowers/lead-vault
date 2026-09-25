@@ -2,6 +2,7 @@
     <div class="full-record-shell">
         <a class="back-link" routerLink="/">← Back to Lead Vault</a>
         <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <button *ngIf="errorMessage && !accessState?.isLoggedIn" type="button" class="primary-action-button" (click)="signInToTodd()">Sign in with TODD</button>
         <app-preloader [isLoading]="isLoading" message="Loading full record…"></app-preloader>
         <div class="full-record-card" *ngIf="!isLoading && fullRecord as record">
             <section class="hero-section">

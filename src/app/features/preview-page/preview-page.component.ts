@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { filter, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LeadVaultApiService } from '../../services/lead-vault-api.service';
 import { LeadVaultAuthService } from '../../services/lead-vault-auth.service';
+import { LeadVaultViewer, LeadVaultViewerService } from '../../services/lead-vault-viewer.service';
 import { isInvalidLeadVaultRecordId } from '../../utils/lead-vault-record-id.util';
 import { PreloaderComponent } from '../../shared/preloader/preloader.component';
 
@@ -40,6 +42,10 @@ export class PreviewPageComponent implements OnInit {
   accessMessage = '';
   accessChecked = false;
   hasAccess = false;
+  /** Signed-in tenant has its one free reveal unused - offered, never
+   * spent automatically (opening /full is what consumes it). */
+  freeTrialAvailable = false;
+  viewer: LeadVaultViewer | null = null;
   previewRecord: {
     id: string;
     teaserName: string;
@@ -58,18 +64,39 @@ export class PreviewPageComponent implements OnInit {
     private readonly router: Router,
     private readonly leadVaultService: LeadVaultApiService,
     private readonly authService: LeadVaultAuthService,
+    private readonly viewerService: LeadVaultViewerService,
   ) { }
 
-  ngOnInit (): void {
+  async ngOnInit (): Promise<void> {
     this.recordId = ( this.route.snapshot.paramMap.get( 'id' ) || '' ).trim();
-    this.purchaserEmail = this.getStoredLeadVaultEmail();
 
     if ( isInvalidLeadVaultRecordId( this.recordId ) ) {
       this.router.navigate( ['/'], { replaceUrl: true } );
       return;
     }
 
+    this.viewer = await firstValueFrom(
+      this.viewerService.viewer$.pipe( filter( ( viewer ) => viewer.status !== 'loading' ) ),
+    );
+
+    // Master tenant / TODD Suite / Unlimited: nothing to buy here.
+    if ( this.viewer.hasFullAccess ) {
+      this.router.navigate( ['/full', this.recordId], { replaceUrl: true } );
+      return;
+    }
+
+    this.purchaserEmail = this.getStoredLeadVaultEmail();
     this.loadPreview();
+  }
+
+  signInToTodd (): void {
+    this.authService.signIn( `/record/${this.recordId}` );
+  }
+
+  useFreeReveal (): void {
+    this.router.navigate( ['/full', this.recordId], {
+      queryParams: { email: this.normalizeEmail( this.purchaserEmail ) }
+    } );
   }
   getScoreTier ( score: number ): 'strong' | 'good' | 'fair' {
     if ( score >= 80 ) return 'strong';
@@ -97,6 +124,7 @@ export class PreviewPageComponent implements OnInit {
     this.errorMessage = '';
     this.accessMessage = '';
     this.accessChecked = false;
+    this.freeTrialAvailable = false;
     this.isCheckingAccess = true;
     this.storeLeadVaultEmail( email );
 
@@ -105,6 +133,13 @@ export class PreviewPageComponent implements OnInit {
         this.hasAccess = !!response?.hasAccess;
         this.isCheckingAccess = false;
         this.accessChecked = true;
+
+        if ( response?.accessSource === 'free-trial-available' ) {
+          this.hasAccess = false;
+          this.freeTrialAvailable = true;
+          this.accessMessage = 'Your TODD account has one free reveal. Use it on this lead, or save it and unlock for $29.';
+          return;
+        }
 
         if ( this.hasAccess ) {
           this.accessMessage = 'Access found. Opening full record...';
@@ -210,18 +245,15 @@ export class PreviewPageComponent implements OnInit {
       return queryEmail;
     }
 
-    const storedEmail = this.normalizeEmail( localStorage.getItem( 'leadVaultEmail' ) || '' );
-
-    if ( storedEmail ) {
-      return storedEmail;
-    }
-
-    const signedInEmail = this.normalizeEmail( this.authService.getCurrentUserEmailSync() );
+    // A signed-in TODD user's own email beats a stale one left in storage
+    // from an earlier anonymous purchase.
+    const signedInEmail = this.normalizeEmail( this.viewer?.email || this.authService.getCurrentUserEmailSync() );
     if ( signedInEmail ) {
       this.storeLeadVaultEmail( signedInEmail );
+      return signedInEmail;
     }
 
-    return signedInEmail;
+    return this.normalizeEmail( localStorage.getItem( 'leadVaultEmail' ) || '' );
   }
 
   private storeLeadVaultEmail ( email: string ): void {

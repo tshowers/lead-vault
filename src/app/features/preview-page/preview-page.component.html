@@ -158,6 +158,16 @@
                             {{ isStartingCheckout ? 'Starting Checkout...' : 'Unlock for $29' }}
                         </button>
                     </div>
+                    <div class="action-row" *ngIf="freeTrialAvailable">
+                        <button type="button" class="primary-button" (click)="useFreeReveal()">Use my free reveal</button>
+                    </div>
+                    <div class="todd-sign-in" *ngIf="viewer?.status === 'signed-out'">
+                        <p>TODD Suite subscriber? Sign in and every Lead Vault record opens in full.</p>
+                        <button type="button" class="secondary-button" (click)="signInToTodd()">Sign in with TODD</button>
+                    </div>
+                    <p class="todd-signed-in" *ngIf="viewer?.status === 'signed-in'">
+                        Signed in as <strong>{{ viewer?.email }}</strong> · {{ viewer?.label }}
+                    </p>
                     <div class="trust-signals">
                         <p>One-time purchase. No subscription required.</p>
                         <p>Already purchased? We'll open the record immediately.</p>

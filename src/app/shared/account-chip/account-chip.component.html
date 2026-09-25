@@ -1,0 +1,38 @@
+<ng-container *ngIf="viewer$ | async as viewer">
+  <button *ngIf="viewer.status === 'signed-out'" type="button" class="account-chip" (click)="signIn()">
+    <span class="account-chip__dot" aria-hidden="true"></span>
+    <span class="account-chip__label">Sign in with TODD</span>
+  </button>
+
+  <ng-container *ngIf="viewer.status === 'signed-in'">
+    <button
+      type="button"
+      class="account-chip account-chip--signed-in"
+      [class.account-chip--full]="viewer.hasFullAccess"
+      (click)="toggle()"
+      [attr.aria-expanded]="isOpen"
+      aria-controls="account-chip-panel"
+      [attr.aria-label]="'Signed in as ' + viewer.email + ', ' + viewer.label"
+    >
+      <span class="account-chip__dot" aria-hidden="true"></span>
+      <span class="account-chip__text">
+        <span class="account-chip__email">{{ viewer.email || 'Signed in' }}</span>
+        <span class="account-chip__access">{{ viewer.label }}</span>
+      </span>
+    </button>
+
+    <div class="account-chip__overlay" *ngIf="isOpen" (click)="isOpen = false"></div>
+    <div id="account-chip-panel" class="account-chip__panel" *ngIf="isOpen" role="dialog" aria-label="Account">
+      <p class="account-chip__panel-eyebrow">Signed in to TODD</p>
+      <p class="account-chip__panel-email">{{ viewer.email }}</p>
+      <p class="account-chip__panel-copy" [ngSwitch]="viewer.accessLevel">
+        <span *ngSwitchCase="'master-tenant'">Master tenant — every Lead Vault record opens in full.</span>
+        <span *ngSwitchCase="'suite-subscriber'">Your TODD Suite subscription opens every Lead Vault record.</span>
+        <span *ngSwitchCase="'unlimited-subscriber'">Lead Vault Unlimited opens every record.</span>
+        <span *ngSwitchCase="'free-trial-available'">You have one free reveal. Pick any lead to use it.</span>
+        <span *ngSwitchDefault>Records you've purchased open with this email. Others unlock for $29 each.</span>
+      </p>
+      <button type="button" class="account-chip__signout" (click)="signOut()">Sign out</button>
+    </div>
+  </ng-container>
+</ng-container>

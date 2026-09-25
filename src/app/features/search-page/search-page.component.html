@@ -43,15 +43,33 @@
                 <button type="button" class="secondary-action" (click)="unlockValidationRecord(record)">Review contact</button>
             </section>
             <section class="search-results" *ngIf="mode === 'search' && results.length > 0">
-                <a class="search-result" *ngFor="let result of results; trackBy: trackByResultId" [routerLink]="['/record', result.id]">
+                <ng-container *ngIf="viewer$ | async as viewer">
+                <p class="access-banner" *ngIf="viewer.hasFullAccess">
+                    <span class="access-banner__dot" aria-hidden="true"></span>
+                    {{ viewer.label }} — every result below opens the full record.
+                </p>
+                <a class="search-result" *ngFor="let result of results; trackBy: trackByResultId" [routerLink]="viewer.hasFullAccess ? ['/full', result.id] : ['/record', result.id]" [class.search-result--unlocked]="viewer.hasFullAccess">
                     <div>
-                        <p class="eyebrow">Lead intelligence brief</p>
+                        <p class="eyebrow">{{ viewer.hasFullAccess ? 'Unlocked · full record' : 'Lead intelligence brief' }}</p>
                         <h2>{{ result.teaserCompanyName || 'Unknown Company' }}</h2>
                         <p>{{ result.teaserName || 'Unknown Contact' }}<span *ngIf="result.teaserTitle"> · {{ result.teaserTitle }}</span></p>
                         <p class="muted">{{ result.emailMasked || 'Masked email' }}<span *ngIf="result.teaserLocation"> · {{ result.teaserLocation }}</span></p>
                     </div>
-                    <div class="result-score">{{ result.qualityScore || 0 }}<small>fit</small></div>
+                    <div class="result-score" *ngIf="result.matchScore != null; else qualityScoreBadge" title="How closely this lead matches your search">{{ result.matchScore }}<small>match</small></div>
+                    <ng-template #qualityScoreBadge>
+                        <div class="result-score" title="Profile completeness">{{ result.qualityScore || 0 }}<small>quality</small></div>
+                    </ng-template>
                 </a>
+                <div class="results-paging" *ngIf="hasMoreResults || moreRequiresSignIn">
+                    <p class="results-paging__count">Showing {{ results.length }} of {{ totalResults }}</p>
+                    <button *ngIf="hasMoreResults" type="button" class="secondary-action" [disabled]="isLoadingMore" (click)="loadMoreResults()">
+                        {{ isLoadingMore ? 'Loading…' : 'Show more' }}
+                    </button>
+                    <button *ngIf="moreRequiresSignIn && viewer.status === 'signed-out'" type="button" class="secondary-action" (click)="signInForMoreResults()">
+                        Sign in with TODD to see all
+                    </button>
+                </div>
+                </ng-container>
             </section>
             <section class="empty-search" *ngIf="mode === 'search' && showRecoveryState">
                 <p>No matching contacts found.</p>

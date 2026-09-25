@@ -153,18 +153,22 @@ export class FullRecordPageComponent implements OnInit {
     return this.authService.getCurrentUserIdSync() || undefined;
   }
 
-  ngOnInit (): void {
+  async ngOnInit (): Promise<void> {
     this.recordId = ( this.route.snapshot.paramMap.get( 'id' ) || '' ).trim();
-    this.purchaserEmail = this.resolvePurchaserEmail();
 
     if ( isInvalidLeadVaultRecordId( this.recordId ) ) {
       this.router.navigate( ['/'], { replaceUrl: true } );
       return;
     }
 
+    // Wait for Firebase to restore the session so a signed-in TODD user's
+    // email (and the ID token the interceptor sends) is available.
+    await this.authService.whenReady();
+    this.purchaserEmail = this.resolvePurchaserEmail();
+
     if ( !this.purchaserEmail ) {
       this.isLoading = false;
-      this.errorMessage = 'Purchaser email is missing.';
+      this.errorMessage = 'Sign in with TODD, or open this lead from the email you purchased it with.';
       return;
     }
 
@@ -747,10 +751,11 @@ export class FullRecordPageComponent implements OnInit {
         this.actionErrorMessage = '';
         this.recommendationErrorMessage = '';
         this.isLoading = false;
-        this.errorMessage =
-          error?.error?.message ||
-          error?.message ||
-          'Lead Vault full record failed.';
+        this.errorMessage = error?.status === 403
+          ? `No access to this lead for ${this.purchaserEmail}. Sign in with a TODD Suite account, or unlock it from the preview.`
+          : error?.error?.message ||
+            error?.message ||
+            'Lead Vault full record failed.';
       }
     } );
   }
@@ -763,16 +768,12 @@ export class FullRecordPageComponent implements OnInit {
       return queryEmail;
     }
 
-    const storedEmail = ( localStorage.getItem( 'leadVaultEmail' ) || '' ).trim().toLowerCase();
-    if ( storedEmail ) {
-      return storedEmail;
-    }
-
     const signedInEmail = this.authService.getCurrentUserEmailSync().trim().toLowerCase();
     if ( signedInEmail ) {
       localStorage.setItem( 'leadVaultEmail', signedInEmail );
+      return signedInEmail;
     }
 
-    return signedInEmail;
+    return ( localStorage.getItem( 'leadVaultEmail' ) || '' ).trim().toLowerCase();
   }
 }

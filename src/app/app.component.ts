@@ -4,10 +4,11 @@ import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './shared/toast/toast.component';
 import { CommandPaletteComponent } from './shared/page/command-palette/command-palette.component';
 import { PlatformMenuComponent } from './shared/platform-menu/platform-menu.component';
+import { AccountChipComponent } from './shared/account-chip/account-chip.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastComponent, CommandPaletteComponent, PlatformMenuComponent],
+  imports: [RouterOutlet, ToastComponent, CommandPaletteComponent, AccountChipComponent, PlatformMenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

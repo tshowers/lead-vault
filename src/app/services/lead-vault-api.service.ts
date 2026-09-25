@@ -3,6 +3,34 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export type LeadVaultAccessLevel =
+  | 'master-tenant'
+  | 'suite-subscriber'
+  | 'unlimited-subscriber'
+  | 'free-trial-available'
+  | 'none';
+
+export interface LeadVaultSearchResponse {
+  success: boolean;
+  count: number;
+  results: any[];
+  total?: number;
+  offset?: number;
+  hasMore?: boolean;
+  /** Anonymous caller, more ranked results exist behind a TODD sign-in. */
+  moreRequiresSignIn?: boolean;
+  parsedSearchPlan?: Record<string, string> | null;
+}
+
+export interface LeadVaultViewerResponse {
+  success: boolean;
+  signedIn: boolean;
+  email?: string;
+  accessLevel: LeadVaultAccessLevel;
+  hasFullAccess?: boolean;
+  freeTrialRecordId?: string;
+}
+
 /**
  * Ported near-verbatim from the monorepo's
  * features/lead-vault/services/lead-vault.service.ts (301 lines) - already
@@ -32,16 +60,12 @@ export class LeadVaultApiService {
     companyName?: string;
     personName?: string;
     limit?: number;
-  } ): Observable<{
-    success: boolean;
-    count: number;
-    results: any[];
-  }> {
-    return this.http.post<{
-      success: boolean;
-      count: number;
-      results: any[];
-    }>( this.buildApiUrl( '/lead-vault/search' ), request || {} );
+    /** Signed-in only - anonymous callers always get the first page. */
+    offset?: number;
+    /** The parsedSearchPlan from page one, so later pages skip the AI parse. */
+    parsedPlan?: Record<string, string> | null;
+  } ): Observable<LeadVaultSearchResponse> {
+    return this.http.post<LeadVaultSearchResponse>( this.buildApiUrl( '/lead-vault/search' ), request || {} );
   }
 
   /**
@@ -107,11 +131,18 @@ export class LeadVaultApiService {
     }>( this.buildApiUrl( `/momentum/prepared-lead-sets/${encodeURIComponent( setId )}` ) );
   }
 
+  /** Who the signed-in caller is and their tenant-wide Lead Vault access -
+   * identity comes from the Bearer token the auth interceptor attaches. */
+  getViewer (): Observable<LeadVaultViewerResponse> {
+    return this.http.get<LeadVaultViewerResponse>( this.buildApiUrl( '/lead-vault/me' ) );
+  }
+
   checkAccess ( recordId: string, email: string ): Observable<{
     success: boolean;
     hasAccess: boolean;
     recordId: string;
     email: string;
+    accessSource?: LeadVaultAccessLevel | 'record-entitlement' | 'free-trial';
   }> {
     const params = new HttpParams().set( 'email', this.normalizeEmail( email ) );
 
@@ -120,6 +151,7 @@ export class LeadVaultApiService {
       hasAccess: boolean;
       recordId: string;
       email: string;
+      accessSource?: LeadVaultAccessLevel | 'record-entitlement' | 'free-trial';
     }>(
       this.buildApiUrl( `/lead-vault/record/${encodeURIComponent( recordId )}/access` ),
       { params }

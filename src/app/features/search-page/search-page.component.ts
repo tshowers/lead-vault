@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeadVaultAssistantSignalService } from '../../services/lead-vault-assistant-signal.service';
 import { LeadVaultApiService } from '../../services/lead-vault-api.service';
 import { LeadVaultAuthService } from '../../services/lead-vault-auth.service';
+import { LeadVaultViewerService } from '../../services/lead-vault-viewer.service';
 import { Observable, firstValueFrom, from, of } from 'rxjs';
 import { catchError, concatMap, map, toArray } from 'rxjs/operators';
 import { VERSION } from '../../version';
@@ -54,6 +55,9 @@ type LeadVaultSearchResultItem = {
   capabilities: string[];
   emailMasked: string;
   qualityScore: number;
+  /** 0-100 query relevance from the backend ranker; null/absent for
+   * non-search sources (validate-email match, momentum prepared sets). */
+  matchScore?: number | null;
 };
 
 type LeadVaultMode = 'validate' | 'search';
@@ -69,6 +73,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   /** The monorepo's real production domain - see header comment. */
   readonly toddHomeUrl = 'https://todd.taliferro.tech';
   readonly appVersion = VERSION;
+  readonly viewer$ = inject( LeadVaultViewerService ).viewer$;
 
   readonly placeholderExamples: string[] = [
     'Who is looking to buy technology services',
@@ -105,6 +110,14 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   hasSearched = false;
   errorMessage = '';
   results: LeadVaultSearchResultItem[] = [];
+  /** Paging for the direct query only - translated fallback searches are
+   * a merged, unpaged set. */
+  totalResults = 0;
+  hasMoreResults = false;
+  moreRequiresSignIn = false;
+  isLoadingMore = false;
+  private pagedQuery = '';
+  private pagedPlan: Record<string, string> | null = null;
   translatedQueryTerms: string[] = [];
   fallbackSearchTermsTried: string[] = [];
   showingTranslatedResults = false;
@@ -444,6 +457,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.hasSearched = true;
     this.errorMessage = '';
     this.clearFallbackState();
+    this.resetPaging();
     this.emitAssistantActivity( 'lead_search_started', { originalQuery: query, source } );
     this.publishPageContext();
 
@@ -473,6 +487,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         } );
 
         if ( directSearchReturnedResults || translatedTerms.length === 0 ) {
+          this.pagedQuery = query;
+          this.pagedPlan = response?.parsedSearchPlan || null;
+          this.totalResults = Number( response?.total ) || directResults.length;
+          this.hasMoreResults = !!response?.hasMore;
+          this.moreRequiresSignIn = !!response?.moreRequiresSignIn;
           this.fallbackSearchTermsTried = translatedTerms;
           this.finishSearch( {
             originalQuery: query,
@@ -522,6 +541,35 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     } );
   }
 
+  loadMoreResults (): void {
+    if ( !this.hasMoreResults || this.isLoadingMore || !this.pagedQuery ) return;
+
+    this.isLoadingMore = true;
+    this.leadVaultService.search( {
+      query: this.pagedQuery,
+      offset: this.results.length,
+      parsedPlan: this.pagedPlan,
+    } ).subscribe( {
+      next: ( response ) => {
+        const seenIds = new Set( this.results.map( ( result ) => result.id ) );
+        const nextResults = this.normalizeResults( response?.results ).filter( ( result ) => !seenIds.has( result.id ) );
+        this.results = [...this.results, ...nextResults];
+        this.totalResults = Number( response?.total ) || this.totalResults;
+        this.hasMoreResults = !!response?.hasMore && nextResults.length > 0;
+        this.isLoadingMore = false;
+        this.publishPageContext();
+      },
+      error: ( error ) => {
+        this.isLoadingMore = false;
+        this.errorMessage = error?.error?.message || error?.message || 'Could not load more results.';
+      }
+    } );
+  }
+
+  signInForMoreResults (): void {
+    this.authService.signIn( this.router.url );
+  }
+
   onRecoveryPillClick ( pill: string ): void {
     const previousQuery = ( this.searchQuery || '' ).trim();
 
@@ -536,6 +584,15 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   trackByResultId ( index: number, item: { id: string; } ): string {
     return item.id;
+  }
+
+  private resetPaging (): void {
+    this.totalResults = 0;
+    this.hasMoreResults = false;
+    this.moreRequiresSignIn = false;
+    this.isLoadingMore = false;
+    this.pagedQuery = '';
+    this.pagedPlan = null;
   }
 
   private clearFallbackState (): void {

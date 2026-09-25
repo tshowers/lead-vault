@@ -1372,3 +1372,55 @@
     .recovery-pill-list button { color: #dbeafe; background: #1f2d40; }
     .lead-vault-home-link { color: #00bfff; }
 }
+
+/* Signed-in master / Suite / Unlimited viewers: results open the full record. */
+.access-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 14px;
+    color: #1d5a8f;
+    background: #e8f2fb;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.access-banner__dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2c6cb0;
+}
+
+.search-result--unlocked .eyebrow {
+    color: #2c6cb0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .access-banner { color: #cfe6f7; background: #1a2d42; }
+    .access-banner__dot { background: #7fb3d8; }
+    .search-result--unlocked .eyebrow { color: #7fb3d8; }
+}
+
+.results-paging {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 6px 4px 0;
+}
+
+.results-paging__count {
+    margin: 0;
+    color: #71808d;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+    .results-paging__count { color: #9aadc1; }
+}

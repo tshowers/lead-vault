@@ -75,6 +75,14 @@ export class LeadVaultAuthService {
     return this.auth.currentUser?.getIdToken() ?? null;
   }
 
+  /** Resolves once Firebase has restored any persisted session - until then
+   * currentUser is null even for a signed-in user, so the *Sync getters
+   * below and getIdToken() read as "signed out" on a fresh page load. */
+  async whenReady (): Promise<void> {
+    if ( typeof window === 'undefined' ) return;
+    await this.auth.authStateReady();
+  }
+
   /** Used by the preview/full-record pages to pre-fill the purchaser email for a signed-in user, synchronously. */
   getCurrentUserEmailSync (): string {
     return this.auth.currentUser?.email || '';

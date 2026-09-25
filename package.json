@@ -1,6 +1,6 @@
 {
   "name": "lead-vault",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "scripts": {
     "ng": "ng",
     "generate-version": "node scripts/generate-version.js",
@@ -13,6 +13,8 @@
     "watch": "ng build --watch --configuration development",
     "pretest": "npm run generate-version",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit --pretty false",
     "serve:ssr:lead-vault": "node dist/lead-vault/server/server.mjs"
   },
   "private": true,
