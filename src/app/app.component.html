@@ -1,5 +1,4 @@
-<div class="app-global-actions"><app-account-chip /><app-platform-menu /></div>
-<app-command-palette />
+<div class="app-global-actions"><app-account-chip /><app-platform-menu [isLoggedIn]="(isLoggedIn$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signIn)="signIn()" (signOut)="signOut()" /></div>
 <div class="app-page-content">
   <router-outlet></router-outlet>
 </div>
