@@ -1,35 +1,249 @@
+@import "@taliferro/ui/styles/tokens.css";
 @import "@taliferro/ui/styles/controls.css";
 @import "@taliferro/ui/styles/universal-menu.css";
+@import "@taliferro/ui/styles/app-header.css";
+@import "@taliferro/ui/styles/product-pages.css";
 
-/* You can add global styles to this file, and also import other style files */
+/* Lead Vault (design_handoff_music_leadvault_network 14a–14n). Cyan accent;
+ * colours come from tokens.css, and the header's theme pill can override the
+ * system setting with data-theme on <html>. */
 
-/*
- * TODD's brand blue, from frontend/src/styles.css :root. Several ported
- * components' own CSS references these two by name (--tl-blue,
- * --tl-blue-mid) without redeclaring them locally - true of TODD's own
- * global stylesheet too, this is the only piece of it actually needed so
- * far, not a port of the full 7000+ line stylesheet.
- */
-:root {
-  --tl-blue: #00bfff;
-  --tl-blue-mid: #0095cc;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
+html { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
-
-  html,
-  body {
-    min-height: 100%;
-    background: #0b1119;
-    color: #f8fafc;
-  }
-
-  app-root {
-    display: block;
-    min-height: 100vh;
-    background: #0b1119;
-  }
+  html:not([data-theme="light"]) { color-scheme: dark; }
 }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+
+/* Old TODD names still referenced by a few ported components. */
+:root {
+  --tl-blue: var(--t-cyan-fg);
+  --tl-blue-mid: var(--t-cyan-fg);
+}
+
+/* ---- Lead Vault building blocks shared by the pages ---- */
+
+.lv-eyebrow,
+p.lv-eyebrow,
+h2.lv-eyebrow {
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lv-eyebrow.lv-eyebrow--cyan { color: var(--t-cyan-fg); }
+
+.lv-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--t-cyan);
+  color: var(--t-cyan-fg);
+}
+
+.lv-tag[data-tint="green"] { background: var(--t-green); color: var(--t-green-fg); }
+.lv-tag[data-tint="red"] { background: var(--t-red); color: var(--t-red-fg); }
+
+.lv-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Buttons: exact sizes, since the shared control layer pads every button. */
+.lv-btn,
+button.lv-btn,
+a.lv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  min-height: 0;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: 600 16px/1 var(--font);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.lv-btn:hover:not(:disabled) { background: var(--surface2); transform: none; }
+.lv-btn.lv-btn--on-surface { background: var(--bg); }
+.lv-btn.lv-btn--on-surface:hover:not(:disabled) { background: var(--surface2); }
+
+.lv-btn.lv-btn--primary {
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.lv-btn.lv-btn--primary:hover:not(:disabled) { background: var(--text); opacity: .88; }
+.lv-btn:disabled { opacity: .5; cursor: default; }
+
+.lv-btn:focus-visible,
+.lv-link:focus-visible,
+.lv-chip:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.lv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 600 15px/1.2 var(--font);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lv-link:hover { color: var(--text); }
+
+.lv-chip,
+button.lv-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  min-height: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: 700 14px/1 var(--font);
+  box-shadow: none;
+}
+
+.lv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Score ring: conic-gradient arc with an inner disc (handoff "Score rings"). */
+.lv-ring {
+  --v: 0;
+  --c: var(--green);
+  --size: 56px;
+  --inset: 6px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  border-radius: 50%;
+  background: conic-gradient(var(--c) calc(var(--v) * 1%), var(--surface2) 0);
+}
+
+.lv-ring::before {
+  content: "";
+  position: absolute;
+  inset: var(--inset);
+  border-radius: 50%;
+  background: var(--ring-fill, var(--bg));
+}
+
+.lv-ring > span {
+  position: relative;
+  font-weight: 700;
+  font-size: calc(var(--size) * .3);
+  letter-spacing: -0.02em;
+}
+
+.lv-ring[data-low] { --c: var(--amber); }
+
+.lv-check-list {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.lv-check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.lv-check-list li .lv-icon { margin-top: 2px; color: var(--green); }
+.lv-check-list--cyan li .lv-icon { color: var(--t-cyan-fg); }
+
+.lv-dot-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--t-green);
+  color: var(--t-green-fg);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lv-dot-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lv-field,
+input.lv-field {
+  width: 100%;
+  height: 50px;
+  min-height: 0;
+  padding: 0 20px;
+  border: 0 !important;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: 400 16px/1 var(--font);
+  box-shadow: none !important;
+  outline: none;
+}
+
+.lv-field.lv-field--on-surface { background: var(--bg); }
+.lv-field::placeholder { color: var(--muted); }
+.lv-field:focus-visible { outline: 2px solid var(--blue) !important; outline-offset: 2px; }

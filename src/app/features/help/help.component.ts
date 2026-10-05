@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from '../../shared/seo.service';
+import { VERSION } from '../../version';
 
 interface HelpStep {
   number: string;
@@ -16,9 +17,11 @@ interface HelpStep {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './help.component.html',
-  styleUrl: './help.component.css',
+  styleUrl: '../about/about.component.css',
 })
 export class HelpComponent implements OnInit {
+  readonly version = VERSION.version;
+
   constructor(
     private readonly title: Title,
     private readonly meta: Meta,

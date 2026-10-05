@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { filter, firstValueFrom } from 'rxjs';
@@ -59,13 +59,25 @@ export class PreviewPageComponent implements OnInit {
     locked: boolean;
   } | null = null;
 
+  readonly included = ['Verified email', 'Phone numbers', 'Company context', 'Capability profile', 'Lead intelligence summary'];
+  /** True when the visitor arrived from inside the app, so Back can return to their results. */
+  readonly cameFromApp: boolean;
+
   constructor (
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly location: Location,
     private readonly leadVaultService: LeadVaultApiService,
     private readonly authService: LeadVaultAuthService,
     private readonly viewerService: LeadVaultViewerService,
-  ) { }
+  ) {
+    this.cameFromApp = !!this.router.getCurrentNavigation()?.previousNavigation;
+  }
+
+  back (): void {
+    if ( this.cameFromApp ) this.location.back();
+    else this.router.navigate( ['/'] );
+  }
 
   async ngOnInit (): Promise<void> {
     this.recordId = ( this.route.snapshot.paramMap.get( 'id' ) || '' ).trim();

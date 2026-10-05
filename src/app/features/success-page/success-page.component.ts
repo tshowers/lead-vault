@@ -14,7 +14,7 @@ import { LeadVaultApiService } from '../../services/lead-vault-api.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './success-page.component.html',
-  styleUrl: './success-page.component.css'
+  styleUrl: '../cancel-page/cancel-page.component.css'
 } )
 export class SuccessPageComponent implements OnInit {
   isLoading = true;

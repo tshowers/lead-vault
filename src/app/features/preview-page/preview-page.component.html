@@ -1,179 +1,120 @@
-<div class="lead-vault-preview-page">
-    <div class="preview-shell">
-        <a class="back-link" routerLink="/">← Back to Lead Vault</a>
-        <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
-        <app-preloader [isLoading]="isLoading" message="Loading preview…"></app-preloader>
-        <div class="preview-card" *ngIf="!isLoading && previewRecord as record">
-            <section class="hero-section">
-                <div class="hero-copy">
-                    <span class="eyebrow">Locked preview</span>
-                    <div class="hero-title-row">
-                        <div class="hero-title-block">
-                            <h1>{{ record.teaserCompanyName || 'Unknown Company' }}</h1>
-                            <p class="subheading">{{ record.teaserName || 'Unknown Contact' }}</p>
-                            <p class="supporting-role" *ngIf="record.teaserTitle">{{ record.teaserTitle }}</p>
-                        </div>
-                        <div class="lead-quality-panel">
-                            <div class="lv-score-arc" [style]="'--score: ' + (record.qualityScore || 0)" [attr.data-tier]="getScoreTier(record.qualityScore || 0)">
-                                <span class="lv-score-arc__value">{{ record.qualityScore || 0 }}</span>
-                            </div>
-                            <span class="lead-quality-label">Lead Quality</span>
-                        </div>
-                    </div>
-                    <div class="why-it-matters-panel">
-                        <p class="why-it-matters-label">Why This Lead Matters</p>
-                        <div class="why-it-matters-list">
-                            <p class="why-it-matters-item" *ngIf="record.sector">
-                                <span class="why-check">✓</span>
-                                <span>{{ record.sector }} company</span>
-                            </p>
-                            <p class="why-it-matters-item" *ngIf="record.capabilities?.length">
-                                <span class="why-check">✓</span>
-                                <span>{{ record.capabilities.length }} verified capabilit{{ record.capabilities.length === 1 ? 'y' : 'ies' }}</span>
-                            </p>
-                            <p class="why-it-matters-item">
-                                <span class="why-check">✓</span>
-                                <span>Lead score {{ record.qualityScore || 0 }}</span>
-                            </p>
-                            <p class="why-it-matters-item" *ngIf="record.emailMasked">
-                                <span class="why-check">✓</span>
-                                <span>Contact preview available</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="lv-indicator-row">
-                        <span class="lv-indicator" [class.lv-indicator--on]="record.emailMasked">
-                            <span class="cockpit-status-light" [class.cockpit-status-light--active]="!!record.emailMasked"></span>
-                            <span>Email</span>
-                        </span>
-                        <span class="lv-indicator" [class.lv-indicator--on]="record.capabilities.length > 0">
-                            <span class="cockpit-status-light" [class.cockpit-status-light--active]="record.capabilities.length > 0"></span>
-                            <span>{{ record.capabilities.length }} capabilities</span>
-                        </span>
-                        <span class="lv-indicator" [class.lv-indicator--on]="!!record.sector">
-                            <span class="cockpit-status-light" [class.cockpit-status-light--active]="!!record.sector"></span>
-                            <span>Sector verified</span>
-                        </span>
-                    </div>
-                    <p class="supporting-copy"> Review the masked contact, score, capabilities, and verified company context before unlocking the full record. </p>
-                    <div class="hero-stats intelligence-stats">
-                        <div class="hero-stat">
-                            <strong>{{ record.emailMasked || 'Masked email' }}</strong>
-                            <span>Email preview</span>
-                        </div>
-                        <div class="hero-stat" *ngIf="record && record.capabilities">
-                            <strong>{{ record.capabilities.length || 0 }} </strong>
-                            <span>Visible capabilities</span>
-                        </div>
-                        <div class="hero-stat" *ngIf="record.sector">
-                            <strong>{{ record.sector }}</strong>
-                            <span>Sector match</span>
-                        </div>
-                    </div>
-                    <div class="left-column-capabilities" *ngIf="record.capabilities && record.capabilities.length">
-                        <p class="locked-label">Capability profile</p>
-                        <div class="capabilities preview-capabilities">
-                            <span class="capability-pill" *ngFor="let capability of record.capabilities">
-                                {{ capability }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="locked-record-card">
-                        <div class="locked-card-header">
-                            <div>
-                                <p class="visual-caption">Intelligence Summary</p>
-                                <h3>{{ record.teaserCompanyName || 'Unknown Company' }}</h3>
-                            </div>
-                            <div class="score-pill">
-                                <span class="score-pill-label">Lead Quality</span>
-                                <strong>{{ record.qualityScore || 0 }} / 100</strong>
-                            </div>
-                        </div>
-                        <div class="locked-preview-group">
-                            <p class="locked-label">Contact</p>
-                            <p class="locked-line name-line">{{ record.teaserName || 'Unknown Contact' }}</p>
-                            <p class="locked-line" *ngIf="record.teaserTitle">{{ record.teaserTitle }}</p>
-                            <p class="locked-line" *ngIf="record.teaserLocation">{{ record.teaserLocation }}</p>
-                            <p class="locked-line" *ngIf="record.emailMasked">{{ record.emailMasked }}</p>
-                            <p class="locked-line sensitive-line">Full email unlocks after purchase</p>
-                            <p class="locked-line sensitive-line">Phone number unlocks after purchase</p>
-                        </div>
-                        <div class="locked-preview-group">
-                            <p class="locked-label">Capabilities</p>
-                            <div class="capabilities preview-capabilities" *ngIf="record.capabilities && record.capabilities.length; else lockedCapabilityFallback">
-                                <span class="capability-pill" *ngFor="let capability of record.capabilities">
-                                    {{ capability }}
-                                </span>
-                            </div>
-                            <ng-template #lockedCapabilityFallback>
-                                <div class="capabilities preview-capabilities">
-                                    <span class="capability-pill">Capability data available</span>
-                                    <span class="capability-pill">Company context available</span>
-                                </div>
-                            </ng-template>
-                        </div>
-                        <div class="locked-preview-group unlock-summary-group">
-                            <p class="locked-label">Included With Unlock</p>
-                            <div class="unlock-benefits-list">
-                                <p class="unlock-benefit"><span class="why-check">✓</span><span>Verified Email</span></p>
-                                <p class="unlock-benefit"><span class="why-check">✓</span><span>Phone Numbers</span></p>
-                                <p class="unlock-benefit"><span class="why-check">✓</span><span>Company Context</span></p>
-                                <p class="unlock-benefit"><span class="why-check">✓</span><span>Capability Profile</span></p>
-                                <p class="unlock-benefit"><span class="why-check">✓</span><span>Lead Intelligence Summary</span></p>
-                            </div>
-                            <p class="locked-label unlock-includes-label">Unlock includes</p>
-                            <div class="intent-pills">
-                                <span class="intent-pill">Real email</span>
-                                <span class="intent-pill">Phone numbers</span>
-                                <span class="intent-pill">Full company context</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="unlock-section">
-                <div class="section-heading">
-                    <span class="eyebrow">Unlock options</span>
-                    <h2>Unlock Complete Contact Intelligence</h2>
-                </div>
-                <div class="unlock-card">
-                    <p class="unlock-copy"> Unlock the verified email, phone numbers, company context, and full lead profile. </p>
-                    <div class="message-stack" *ngIf="accessMessage || errorMessage">
-                        <p class="access-message" *ngIf="accessMessage">
-                            {{ accessMessage }}
-                        </p>
-                        <p class="inline-error-message" *ngIf="errorMessage">
-                            {{ errorMessage }}
-                        </p>
-                    </div>
-                    <label for="leadVaultEmail">Email</label>
-                    <input id="leadVaultEmail" name="leadVaultEmail" type="email" [ngModel]="purchaserEmail" (ngModelChange)="onEmailChange($event)" placeholder="you@company.com" autocomplete="email" />
-                    <div class="action-row">
-                        <button type="button" class="secondary-button" [disabled]="isCheckingAccess || isStartingCheckout" (click)="checkAccess()">
-                            {{ isCheckingAccess ? 'Checking...' : 'Check Access' }}
-                        </button>
-                        <button type="button" class="primary-button" [disabled]="!purchaserEmail || isCheckingAccess || isStartingCheckout" (click)="unlockRecord()">
-                            {{ isStartingCheckout ? 'Starting Checkout...' : 'Unlock for $29' }}
-                        </button>
-                    </div>
-                    <div class="action-row" *ngIf="freeTrialAvailable">
-                        <button type="button" class="primary-button" (click)="useFreeReveal()">Use my free reveal</button>
-                    </div>
-                    <div class="todd-sign-in" *ngIf="viewer?.status === 'signed-out'">
-                        <p>TODD Suite subscriber? Sign in and every Lead Vault record opens in full.</p>
-                        <button type="button" class="secondary-button" (click)="signInToTodd()">Sign in with TODD</button>
-                    </div>
-                    <p class="todd-signed-in" *ngIf="viewer?.status === 'signed-in'">
-                        Signed in as <strong>{{ viewer?.email }}</strong> · {{ viewer?.label }}
-                    </p>
-                    <div class="trust-signals">
-                        <p>One-time purchase. No subscription required.</p>
-                        <p>Already purchased? We'll open the record immediately.</p>
-                    </div>
-                </div>
-            </section>
+<!-- Locked preview + checkout in one view (design_handoff_music_leadvault_network 14d; 14k on iPhone). -->
+<main class="lvp">
+  <app-preloader [isLoading]="isLoading" message="Loading preview…"></app-preloader>
+
+  <div class="lvp-grid" *ngIf="!isLoading">
+    <div class="lvp-main">
+      <button type="button" class="lv-link lvp-back" (click)="back()">
+        <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        {{ cameFromApp ? 'Back to results' : 'Back to Lead Vault' }}
+      </button>
+
+      <p class="lv-error" role="alert" *ngIf="errorMessage && !previewRecord">{{ errorMessage }}</p>
+
+      <ng-container *ngIf="previewRecord as record">
+        <div class="lvp-head">
+          <div class="lvp-head__copy">
+            <span class="lv-tag">
+              <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Locked preview
+            </span>
+            <h1>{{ record.teaserCompanyName || 'Unknown Company' }}</h1>
+            <p class="lvp-name">{{ record.teaserName || 'Unknown Contact' }}</p>
+            <p class="lvp-role" *ngIf="record.teaserTitle || record.teaserLocation">{{ record.teaserTitle }}<span *ngIf="record.teaserTitle && record.teaserLocation"> · </span>{{ record.teaserLocation }}</p>
+          </div>
+          <div class="lvp-quality">
+            <span class="lv-ring" [style.--v]="record.qualityScore || 0" [attr.data-low]="(record.qualityScore || 0) < 70 ? '' : null"><span>{{ record.qualityScore || 0 }}</span></span>
+            <small>Lead quality</small>
+          </div>
         </div>
+
+        <div class="lvp-indicators">
+          <span class="lv-dot-pill" *ngIf="record.emailMasked">Email</span>
+          <span class="lv-dot-pill" *ngIf="record.capabilities.length">{{ record.capabilities.length }} capabilit{{ record.capabilities.length === 1 ? 'y' : 'ies' }}</span>
+          <span class="lv-dot-pill" *ngIf="record.sector">Sector verified</span>
+        </div>
+
+        <div class="lvp-stats">
+          <div class="lvp-stat">
+            <strong>{{ record.emailMasked || 'Masked email' }}</strong>
+            <span>Email preview</span>
+          </div>
+          <div class="lvp-stat">
+            <strong>{{ record.capabilities.length || 0 }}</strong>
+            <span>Visible capabilities</span>
+          </div>
+          <div class="lvp-stat" *ngIf="record.sector">
+            <strong>{{ record.sector }}</strong>
+            <span>Sector match</span>
+          </div>
+        </div>
+
+        <section class="lvp-section">
+          <h2 class="lv-eyebrow">Why this lead matters</h2>
+          <ul class="lv-check-list">
+            <li *ngIf="record.sector"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{{ record.sector }} company</li>
+            <li *ngIf="record.capabilities.length"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{{ record.capabilities.length }} verified capabilit{{ record.capabilities.length === 1 ? 'y' : 'ies' }}</li>
+            <li><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Lead score {{ record.qualityScore || 0 }}</li>
+            <li *ngIf="record.emailMasked"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact preview available</li>
+          </ul>
+        </section>
+
+        <section class="lvp-section" *ngIf="record.capabilities.length">
+          <h2 class="lv-eyebrow">Capability profile</h2>
+          <div class="lv-chips">
+            <span class="lv-chip" *ngFor="let capability of record.capabilities">{{ capability }}</span>
+          </div>
+        </section>
+
+        <section class="lvp-locked">
+          <h2 class="lv-eyebrow">Locked until you unlock</h2>
+          <p><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Full email unlocks after purchase</p>
+          <p><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Phone number unlocks after purchase</p>
+        </section>
+      </ng-container>
     </div>
-</div>
+
+    <!-- Unlock card: a side panel on laptop, a sticky bottom sheet on iPhone (14k). -->
+    <aside class="lvp-unlock" *ngIf="previewRecord" aria-labelledby="lvp-unlock-title">
+      <p class="lv-eyebrow lv-eyebrow--cyan lvp-wide">Unlock options</p>
+      <h2 class="lvp-wide" id="lvp-unlock-title">Unlock complete contact intelligence</h2>
+      <p class="lvp-copy lvp-wide">Unlock the verified email, phone numbers, company context, and full lead profile.</p>
+      <ul class="lv-check-list lv-check-list--cyan lvp-included lvp-wide" aria-label="Included with unlock">
+        <li *ngFor="let item of included"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{{ item }}</li>
+      </ul>
+
+      <div class="lvp-messages" *ngIf="accessMessage || errorMessage" aria-live="polite">
+        <p class="lvp-message" *ngIf="accessMessage">{{ accessMessage }}</p>
+        <p class="lvp-message lvp-message--error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </div>
+
+      <label class="lvp-label lvp-wide" for="leadVaultEmail">Email</label>
+      <input id="leadVaultEmail" name="leadVaultEmail" type="email" class="lv-field lv-field--on-surface" [ngModel]="purchaserEmail" (ngModelChange)="onEmailChange($event)" placeholder="you@company.com" autocomplete="email" />
+
+      <div class="lvp-actions">
+        <button type="button" class="lv-btn lv-btn--on-surface lvp-wide" [disabled]="isCheckingAccess || isStartingCheckout" (click)="checkAccess()">
+          {{ isCheckingAccess ? 'Checking…' : 'Check access' }}
+        </button>
+        <button type="button" class="lv-btn lv-btn--primary lvp-buy" [disabled]="!purchaserEmail || isCheckingAccess || isStartingCheckout" (click)="unlockRecord()">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          {{ isStartingCheckout ? 'Starting checkout…' : 'Unlock for $29' }}
+        </button>
+      </div>
+      <button type="button" class="lv-btn lv-btn--primary lvp-free" *ngIf="freeTrialAvailable" (click)="useFreeReveal()">Use my free reveal</button>
+
+      <div class="lvp-trust lvp-wide">
+        <p>One-time purchase. No subscription required.</p>
+        <p>Already purchased? We'll open the record immediately.</p>
+      </div>
+      <p class="lvp-trust lvp-narrow">One-time purchase.<ng-container *ngIf="viewer?.status === 'signed-out'"> Suite subscriber? <button type="button" class="lvp-inline-signin" (click)="signInToTodd()">Sign in with TODD</button></ng-container></p>
+
+      <div class="lvp-suite lvp-wide" *ngIf="viewer?.status === 'signed-out'">
+        <p>TODD Suite subscriber? Sign in and every Lead Vault record opens in full.</p>
+        <button type="button" class="lv-btn lv-btn--on-surface" (click)="signInToTodd()">Sign in with TODD</button>
+      </div>
+      <p class="lvp-suite lvp-wide" *ngIf="viewer?.status === 'signed-in'">
+        Signed in as <strong>{{ viewer?.email }}</strong> · {{ viewer?.label }}
+      </p>
+    </aside>
+  </div>
+</main>

@@ -1,85 +1,96 @@
-<main class="lead-vault-search-page">
-    <div class="lead-vault-shell">
-        <header class="lead-vault-header">
-            <img src="assets/lead-vault/logo.png" alt="Lead Vault" class="lead-vault-logo">
-        </header>
-        <section class="lead-vault-console" aria-label="Lead Vault">
-            <div class="mode-switch" role="group" aria-label="Lead Vault mode">
-                <span [class.active-label]="mode === 'validate'" [class.disabled-label]="validateEmailUnavailable">Validate Email</span>
-                <label class="ios-toggle">
-                    <input type="checkbox" [checked]="mode === 'search'" [disabled]="validateEmailUnavailable" (change)="onModeChange($any($event.target).checked ? 'search' : 'validate')" aria-label="Switch between email validation and Lead Vault search">
-                    <span class="ios-toggle-track" aria-hidden="true"></span>
-                </label>
-                <span [class.active-label]="mode === 'search'">Search Lead Vault</span>
-            </div>
-            <p class="helper-copy" *ngIf="validateEmailUnavailable">Email validation is temporarily unavailable.</p>
-            <form class="lead-vault-form" (ngSubmit)="submitPrimary()">
-                <label for="leadVaultQuery">{{ mode === 'validate' ? 'Enter email address' : 'Search Lead Vault' }}</label>
-                <div class="input-row">
-                    <input id="leadVaultQuery" name="leadVaultQuery" [type]="mode === 'validate' ? 'email' : 'text'" [(ngModel)]="searchQuery" (ngModelChange)="onSearchQueryChange()" [placeholder]="mode === 'validate' ? 'name@company.com' : 'Search companies, sectors, or capabilities'" [autocomplete]="mode === 'validate' ? 'email' : 'off'" />
-                    <button type="submit" class="primary-action" [disabled]="isLoading">
-                        {{ isLoading ? (mode === 'validate' ? 'Checking...' : 'Searching...') : (mode === 'validate' ? 'Check email' : 'Search') }}
-                    </button>
-                </div>
-                <p class="helper-copy" *ngIf="mode === 'validate'">See if an email address is valid.</p>
-                <p class="helper-copy" *ngIf="mode === 'search'">Search researched contacts by company, sector, capability, or buyer need.</p>
-            </form>
-            <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
-            <section class="validation-result" *ngIf="validationResult as validation" [attr.data-state]="validationState" aria-live="polite">
-                <div class="validation-icon" aria-hidden="true">{{ validationIcon }}</div>
-                <div class="validation-copy">
-                    <h2>{{ validationLabel }}</h2>
-                    <p>Confidence {{ validation.score }}%</p>
-                </div>
-                <div class="validation-score" aria-label="Validation confidence">{{ validation.score }}%</div>
-            </section>
-            <section class="matched-lead" *ngIf="validationResult?.record as record">
-                <div>
-                    <p class="eyebrow">Lead found</p>
-                    <h2>{{ record.teaserCompanyName || 'Unknown Company' }}</h2>
-                    <p>{{ record.teaserName || 'Unknown Contact' }}<span *ngIf="record.teaserTitle"> · {{ record.teaserTitle }}</span></p>
-                    <p class="muted">{{ record.emailMasked || 'Masked email' }}<span *ngIf="record.teaserLocation"> · {{ record.teaserLocation }}</span></p>
-                </div>
-                <button type="button" class="secondary-action" (click)="unlockValidationRecord(record)">Review contact</button>
-            </section>
-            <section class="search-results" *ngIf="mode === 'search' && results.length > 0">
-                <ng-container *ngIf="viewer$ | async as viewer">
-                <p class="access-banner" *ngIf="viewer.hasFullAccess">
-                    <span class="access-banner__dot" aria-hidden="true"></span>
-                    {{ viewer.label }} — every result below opens the full record.
-                </p>
-                <a class="search-result" *ngFor="let result of results; trackBy: trackByResultId" [routerLink]="viewer.hasFullAccess ? ['/full', result.id] : ['/record', result.id]" [class.search-result--unlocked]="viewer.hasFullAccess">
-                    <div>
-                        <p class="eyebrow">{{ viewer.hasFullAccess ? 'Unlocked · full record' : 'Lead intelligence brief' }}</p>
-                        <h2>{{ result.teaserCompanyName || 'Unknown Company' }}</h2>
-                        <p>{{ result.teaserName || 'Unknown Contact' }}<span *ngIf="result.teaserTitle"> · {{ result.teaserTitle }}</span></p>
-                        <p class="muted">{{ result.emailMasked || 'Masked email' }}<span *ngIf="result.teaserLocation"> · {{ result.teaserLocation }}</span></p>
-                    </div>
-                    <div class="result-score" *ngIf="result.matchScore != null; else qualityScoreBadge" title="How closely this lead matches your search">{{ result.matchScore }}<small>match</small></div>
-                    <ng-template #qualityScoreBadge>
-                        <div class="result-score" title="Profile completeness">{{ result.qualityScore || 0 }}<small>quality</small></div>
-                    </ng-template>
-                </a>
-                <div class="results-paging" *ngIf="hasMoreResults || moreRequiresSignIn">
-                    <p class="results-paging__count">Showing {{ results.length }} of {{ totalResults }}</p>
-                    <button *ngIf="hasMoreResults" type="button" class="secondary-action" [disabled]="isLoadingMore" (click)="loadMoreResults()">
-                        {{ isLoadingMore ? 'Loading…' : 'Show more' }}
-                    </button>
-                    <button *ngIf="moreRequiresSignIn && viewer.status === 'signed-out'" type="button" class="secondary-action" (click)="signInForMoreResults()">
-                        Sign in with TODD to see all
-                    </button>
-                </div>
-                </ng-container>
-            </section>
-            <section class="empty-search" *ngIf="mode === 'search' && showRecoveryState">
-                <p>No matching contacts found.</p>
-                <div class="recovery-pill-list">
-                    <button type="button" *ngFor="let pill of recoveryPills" (click)="onRecoveryPillClick(pill)">{{ pill }}</button>
-                </div>
-            </section>
-        </section>
-        <footer class="lead-vault-footer">
-            <span class="app-version" [title]="appVersion.buildDate">v{{ appVersion.version }} ({{ appVersion.commit }})</span>
-        </footer>
+<!-- Lead Vault home (design_handoff_music_leadvault_network 14a validate, 14b result, 14c search). -->
+<main class="lv-home" [class.lv-home--search]="mode === 'search'" [class.lv-home--start]="showHero">
+  <h1 class="lv-hero" *ngIf="showHero">Find the right lead, then unlock it.</h1>
+
+  <div class="lv-mode" role="radiogroup" aria-label="Lead Vault mode">
+    <button type="button" role="radio" [class.is-on]="mode === 'validate'" [attr.aria-checked]="mode === 'validate'" [disabled]="validateEmailUnavailable" (click)="onModeChange('validate')">
+      <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Validate email
+    </button>
+    <button type="button" role="radio" [class.is-on]="mode === 'search'" [attr.aria-checked]="mode === 'search'" (click)="onModeChange('search')">
+      <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search Lead Vault
+    </button>
+  </div>
+  <p class="lv-helper lv-helper--flush" *ngIf="validateEmailUnavailable">Email validation is temporarily unavailable.</p>
+
+  <form class="lv-form" (ngSubmit)="submitPrimary()">
+    <label class="lv-eyebrow lv-form__label" for="leadVaultQuery" [class.lv-sr]="mode === 'search' || hasSearched">{{ mode === 'validate' ? 'Enter email address' : 'Search Lead Vault' }}</label>
+    <div class="lv-composer">
+      <input id="leadVaultQuery" name="leadVaultQuery" [type]="mode === 'validate' ? 'email' : 'text'" [(ngModel)]="searchQuery" (ngModelChange)="onSearchQueryChange()" [placeholder]="mode === 'validate' ? 'name@company.com' : placeholderText" [autocomplete]="mode === 'validate' ? 'email' : 'off'" />
+      <button type="submit" class="lv-btn lv-btn--primary" [disabled]="isLoading">
+        {{ isLoading ? (mode === 'validate' ? 'Checking…' : 'Searching…') : (mode === 'validate' ? 'Check email' : 'Search') }}
+      </button>
     </div>
+    <p class="lv-helper" *ngIf="showHero">{{ mode === 'validate' ? 'See if an email address is valid.' : 'Search researched contacts by company, sector, capability, or buyer need.' }}</p>
+  </form>
+
+  <p class="lv-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <!-- 14b: verdict card, then the matching lead -->
+  <section class="lv-verdict" *ngIf="validationResult as validation" [attr.data-state]="validationState" aria-live="polite">
+    <span class="lv-verdict__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" *ngIf="validationState === 'valid'"><path d="M20 6 9 17l-5-5"/></svg>
+      <svg viewBox="0 0 24 24" *ngIf="validationState === 'risky'"><path d="M12 8v5M12 16.5v.01"/></svg>
+      <svg viewBox="0 0 24 24" *ngIf="validationState === 'invalid'"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </span>
+    <div class="lv-verdict__copy">
+      <h2>{{ validationLabel }}</h2>
+      <p>Confidence {{ validation.score }}%</p>
+    </div>
+    <div class="lv-verdict__score" aria-label="Validation confidence">{{ validation.score }}%</div>
+  </section>
+
+  <section class="lv-found" *ngIf="validationResult?.record as record">
+    <div>
+      <p class="lv-eyebrow lv-eyebrow--cyan">Lead found</p>
+      <h2>{{ record.teaserCompanyName || 'Unknown Company' }}</h2>
+      <p>{{ record.teaserName || 'Unknown Contact' }}<span *ngIf="record.teaserTitle"> · {{ record.teaserTitle }}</span></p>
+      <p class="lv-muted">{{ record.emailMasked || 'Masked email' }}<span *ngIf="record.teaserLocation"> · {{ record.teaserLocation }}</span></p>
+    </div>
+    <button type="button" class="lv-btn lv-btn--on-surface" (click)="unlockValidationRecord(record)">
+      Review contact
+      <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </section>
+
+  <!-- 14c: masked teasers -->
+  <section class="lv-results" *ngIf="mode === 'search' && results.length > 0">
+    <ng-container *ngIf="viewer$ | async as viewer">
+      <div class="lv-results__meta">
+        <span>Showing {{ results.length }} of {{ totalResults || results.length }}<ng-container *ngIf="!viewer.hasFullAccess"> · free masked previews</ng-container><ng-container *ngIf="viewer.hasFullAccess"> · {{ viewer.label }}</ng-container></span>
+        <button *ngIf="moreRequiresSignIn && viewer.status === 'signed-out'" type="button" class="lv-results__signin" (click)="signInForMoreResults()">Sign in with TODD to see all</button>
+      </div>
+
+      <div class="lv-grid">
+        <a class="lv-card" *ngFor="let result of results; trackBy: trackByResultId" [routerLink]="viewer.hasFullAccess ? ['/full', result.id] : ['/record', result.id]">
+          <div class="lv-card__body">
+            <p class="lv-eyebrow lv-eyebrow--cyan" [class.lv-eyebrow--green]="viewer.hasFullAccess">{{ viewer.hasFullAccess ? 'Unlocked · full record' : 'Lead intelligence brief' }}</p>
+            <h2>{{ result.teaserCompanyName || 'Unknown Company' }}</h2>
+            <p>{{ result.teaserName || 'Unknown Contact' }}<span *ngIf="result.teaserTitle"> · {{ result.teaserTitle }}</span></p>
+            <p class="lv-muted">{{ result.emailMasked || 'Masked email' }}<span *ngIf="result.teaserLocation"> · {{ result.teaserLocation }}</span></p>
+          </div>
+          <div class="lv-card__score" [title]="result.matchScore != null ? 'How closely this lead matches your search' : 'Profile completeness'">
+            <span class="lv-ring" [style.--v]="scoreOf(result)" [attr.data-low]="scoreOf(result) < 70 ? '' : null"><span>{{ scoreOf(result) }}</span></span>
+            <small>{{ result.matchScore != null ? 'match' : 'quality' }}</small>
+          </div>
+        </a>
+      </div>
+
+      <div class="lv-paging" *ngIf="hasMoreResults">
+        <button type="button" class="lv-btn" [disabled]="isLoadingMore" (click)="loadMoreResults()">{{ isLoadingMore ? 'Loading…' : 'Show more' }}</button>
+      </div>
+    </ng-container>
+  </section>
+
+  <section class="lv-empty" *ngIf="mode === 'search' && showRecoveryState">
+    <p>No matching contacts found.</p>
+    <div class="lv-chips">
+      <button type="button" class="lv-chip" *ngFor="let pill of recoveryPills" (click)="onRecoveryPillClick(pill)">{{ pill }}</button>
+    </div>
+  </section>
+
+  <footer class="lv-version">
+    <span [title]="appVersion.buildDate">v{{ appVersion.version }} ({{ appVersion.commit }})</span>
+  </footer>
 </main>

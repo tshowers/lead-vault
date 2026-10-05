@@ -1,49 +1,189 @@
+/* About (14f/14n) and Help (14g/14m) share this sheet. */
 :host { display: block; }
 
-.about-page {
-  max-width: 1080px;
+.lvi {
+  width: min(1200px, 100% - 80px);
   margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3.75rem) clamp(1.1rem, 4vw, 2.75rem) 5rem;
-  color: #0f172a;
+  padding: 24px 0 40px;
 }
 
-.about-hero, .about-card {
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  background: #ffffff;
-  border-radius: 20px;
+.lvi-switch { display: none; }
+
+.lvi-context {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-bottom: 18px;
 }
 
-.about-hero { padding: clamp(1.5rem, 4vw, 3rem); }
-.about-hero__eyebrow { color: var(--tl-blue-mid); font-size: .74rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
-.about-hero__content { margin-top: 1rem; }
-.about-hero__context { margin: 0 0 .65rem; color: #64748b; font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.about-hero h1 { max-width: 620px; margin: 0; font-size: clamp(1.9rem, 4.5vw, 3.2rem); line-height: 1.1; letter-spacing: -.03em; }
-.about-hero__lead { max-width: 640px; margin: 1.1rem 0 0; color: #64748b; font-size: clamp(1rem, 1.5vw, 1.1rem); line-height: 1.6; }
-
-.about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.25rem; }
-.about-card { padding: clamp(1.1rem, 3vw, 1.75rem); }
-.about-card__label { color: var(--tl-blue-mid); font-size: .74rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-.about-card h2 { margin: .5rem 0 .6rem; font-size: clamp(1.2rem, 2.2vw, 1.5rem); letter-spacing: -.02em; }
-.about-card p { margin: 0 0 .85rem; color: #64748b; line-height: 1.6; }
-.about-card a { color: #0f172a; font-weight: 700; text-decoration: none; }
-.about-card a:hover { color: var(--tl-blue-mid); }
-
-.about-links { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.75rem; }
-.about-links a { color: #0f172a; text-decoration: none; font-weight: 700; padding: .65rem 1.05rem; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: 999px; background: #f8fafc; }
-.about-links a:hover { color: var(--tl-blue-mid); }
-
-.about-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: 2.25rem; color: #64748b; font-size: .85rem; }
-.about-footer a { color: inherit; font-weight: 600; text-decoration: none; }
-.about-footer a:hover { color: var(--tl-blue-mid); }
-
-@media (prefers-color-scheme: dark) {
-  .about-page { color: #f8fafc; }
-  .about-hero, .about-card { background: #131b26; border-color: rgba(148, 163, 184, 0.18); }
-  .about-links a { background: #0b1119; color: #f8fafc; }
-  .about-card a { color: #f8fafc; }
-  .about-hero__context, .about-card p, .about-footer { color: #94a3b8; }
+.lvi h1 {
+  font-size: 72px;
+  font-weight: 700;
+  line-height: .98;
+  letter-spacing: -0.05em;
 }
 
-@media (max-width: 680px) {
-  .about-grid { grid-template-columns: 1fr; }
+.lvi-lead {
+  margin-top: 20px;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* About */
+.lvi-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.lvi-hero__copy { max-width: 740px; }
+
+.lvi-logo {
+  width: 132px;
+  height: 132px;
+  flex: none;
+  border-radius: 30px;
+}
+
+.lvi-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.lvi-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 28px;
+  border-radius: 28px;
+  background: var(--surface);
+}
+
+.lvi-card--tint { background: var(--t-cyan); }
+.lvi-card--tint .lv-eyebrow { color: var(--t-cyan-fg); }
+.lvi-card h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.lvi-card p { font-size: 16px; line-height: 1.5; }
+
+.lvi-out {
+  margin-top: 4px;
+  font-weight: 700;
+  color: var(--text) !important;
+  text-decoration: none;
+}
+
+.lvi-out:hover { text-decoration: underline; }
+
+.lvi-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.lvi-ctas .lv-btn { height: 48px; font-size: 17px; }
+
+.lvi-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 40px;
+  border-top: 1px solid var(--surface2);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Help */
+.lvi--help {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.lvi-side { position: sticky; top: 24px; }
+.lvi--help h1 { font-size: 52px; letter-spacing: -0.045em; }
+.lvi--help .lvi-lead { font-size: 17px; }
+.lvi--help .lvi-ctas { margin-top: 24px; }
+.lvi--help .lvi-ctas .lv-btn { height: 46px; font-size: 16px; }
+
+.lvi-steps { display: grid; gap: 14px; }
+
+.lvi-step {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 18px;
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--surface);
+}
+
+.lvi-step__num {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--t-cyan);
+  color: var(--t-cyan-fg);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lvi-step h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.lvi-step__copy { margin: 8px 0 12px; font-size: 16px; line-height: 1.5; color: var(--muted); }
+.lvi-step .lv-check-list li { font-size: 15px; }
+
+@media (max-width: 1080px) {
+  .lvi--help { grid-template-columns: 1fr; gap: 32px; }
+  .lvi-side { position: static; }
+}
+
+/* iPhone (14m/14n): Help | About switch on top, single column. */
+@media (max-width: 760px) {
+  .lvi { width: calc(100% - 32px); padding-top: 4px; }
+
+  .lvi-switch {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 22px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--surface);
+  }
+
+  .lvi-switch a {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    height: 38px;
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .lvi-switch a.is-on {
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  }
+
+  .lvi h1, .lvi--help h1 { font-size: 40px; letter-spacing: -0.04em; }
+  .lvi-lead, .lvi--help .lvi-lead { font-size: 17px; }
+  .lvi-hero { flex-direction: column-reverse; gap: 20px; }
+  .lvi-logo { width: 72px; height: 72px; border-radius: 18px; }
+  .lvi-cards { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+  .lvi-card { padding: 22px; border-radius: 24px; }
+  .lvi-ctas .lv-btn { flex: 1 1 100%; }
+  .lvi--help .lvi-ctas { display: none; }
+  .lvi--help { gap: 24px; }
+  .lvi-step { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+  .lvi-foot { padding: 20px 16px; }
 }

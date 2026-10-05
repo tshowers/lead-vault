@@ -1,24 +1,19 @@
 <ng-container *ngIf="viewer$ | async as viewer">
-  <button *ngIf="viewer.status === 'signed-out'" type="button" class="account-chip" (click)="signIn()">
-    <span class="account-chip__dot" aria-hidden="true"></span>
-    <span class="account-chip__label">Sign in with TODD</span>
+  <button *ngIf="viewer.status !== 'signed-in'" type="button" class="ah-pill ah-pill--wide" (click)="signIn()">
+    <span class="ah-dot" aria-hidden="true"></span>Sign in with TODD
   </button>
 
   <ng-container *ngIf="viewer.status === 'signed-in'">
     <button
       type="button"
-      class="account-chip account-chip--signed-in"
-      [class.account-chip--full]="viewer.hasFullAccess"
+      class="ah-pill ah-pill--wide account-chip"
       (click)="toggle()"
       [attr.aria-expanded]="isOpen"
       aria-controls="account-chip-panel"
       [attr.aria-label]="'Signed in as ' + viewer.email + ', ' + viewer.label"
     >
-      <span class="account-chip__dot" aria-hidden="true"></span>
-      <span class="account-chip__text">
-        <span class="account-chip__email">{{ viewer.email || 'Signed in' }}</span>
-        <span class="account-chip__access">{{ viewer.label }}</span>
-      </span>
+      <span class="ah-avatar" data-tint="cyan" aria-hidden="true">{{ initials(viewer.email) }}</span>
+      {{ planName(viewer.accessLevel) }}
     </button>
 
     <div class="account-chip__overlay" *ngIf="isOpen" (click)="isOpen = false"></div>

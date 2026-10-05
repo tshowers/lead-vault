@@ -429,16 +429,20 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     return 'invalid';
   }
 
-  get validationIcon (): string {
-    if ( this.validationState === 'valid' ) return '✓';
-    if ( this.validationState === 'risky' ) return '!';
-    return '×';
+  get validationLabel (): string {
+    if ( this.validationState === 'valid' ) return 'Valid email';
+    if ( this.validationState === 'risky' ) return 'Risky email';
+    return 'Invalid email';
   }
 
-  get validationLabel (): string {
-    if ( this.validationState === 'valid' ) return 'Email appears valid';
-    if ( this.validationState === 'risky' ) return 'Email may be risky';
-    return 'Email is not deliverable';
+  /** The 14a headline shows until there is something to look at. */
+  get showHero (): boolean {
+    return !this.validationResult && !this.results.length && !this.showRecoveryState && !this.errorMessage;
+  }
+
+  /** Match score when the search ranked it, else profile completeness. */
+  scoreOf ( result: LeadVaultSearchResultItem ): number {
+    return Math.round( result.matchScore ?? result.qualityScore ?? 0 );
   }
 
   unlockValidationRecord ( record: LeadVaultSearchResultItem ): void {

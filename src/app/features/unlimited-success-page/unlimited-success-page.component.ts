@@ -9,7 +9,7 @@ import { LeadVaultApiService } from '../../services/lead-vault-api.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './unlimited-success-page.component.html',
-  styleUrl: './unlimited-success-page.component.css'
+  styleUrl: '../cancel-page/cancel-page.component.css'
 } )
 export class UnlimitedSuccessPageComponent implements OnInit {
   isLoading = true;

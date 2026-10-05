@@ -73,6 +73,7 @@ export class FullRecordPageComponent implements OnInit {
   actionMessage = '';
   actionErrorMessage = '';
   recommendationGoal = 'Introduce my service';
+  readonly goals = ['Introduce my service', 'Book a meeting', 'Sell a product', 'Start a partnership', 'Recruit', 'Other'];
   recommendationCheckoutInProgress = false;
   recommendationLoading = false;
   recommendationMessage = '';
@@ -583,6 +584,12 @@ export class FullRecordPageComponent implements OnInit {
     if ( score >= 80 ) return 'strong';
     if ( score >= 60 ) return 'good';
     return 'fair';
+  }
+
+  /** iPhone: the recommendation row jumps to the card further down. */
+  scrollToRecommendation (): void {
+    if ( typeof document === 'undefined' ) return;
+    document.getElementById( 'lvf-recommendation' )?.scrollIntoView( { behavior: 'smooth', block: 'start' } );
   }
 
   onRecommendationGoalChange ( goal: string ): void {

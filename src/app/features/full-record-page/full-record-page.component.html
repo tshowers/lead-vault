@@ -1,220 +1,157 @@
-<div class="lead-vault-full-record-page">
-    <div class="full-record-shell">
-        <a class="back-link" routerLink="/">← Back to Lead Vault</a>
-        <p class="status error" *ngIf="errorMessage">{{ errorMessage }}</p>
-        <button *ngIf="errorMessage && !accessState?.isLoggedIn" type="button" class="primary-action-button" (click)="signInToTodd()">Sign in with TODD</button>
-        <app-preloader [isLoading]="isLoading" message="Loading full record…"></app-preloader>
-        <div class="full-record-card" *ngIf="!isLoading && fullRecord as record">
-            <section class="hero-section">
-                <div class="hero-copy">
-                    <span class="eyebrow">Unlocked lead</span>
-                    <h1>{{ record.companyName || 'Unknown Company' }}</h1>
-                    <p class="subheading">{{ record.fullName || 'Unknown Contact' }}</p>
-                    <p class="supporting-copy"> Full Lead Vault access is active for this record. Contact details, company data, and capabilities are now available to use. </p>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <strong>
-                                <a *ngIf="record.email; else heroMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
-                                    {{ record.email }}
-                                </a>
-                                <ng-template #heroMaskedEmail>
-                                    {{ record.emailMasked || 'No email' }}
-                                </ng-template>
-                            </strong>
-                            <div class="email-meta-row" *ngIf="record.emailChecked || record.emailBlocked">
-                                <span class="cockpit-status-light"
-                                    [class.cockpit-status-light--active]="record.emailChecked && !record.emailBlocked"
-                                    [class.lv-light--blocked]="record.emailBlocked"></span>
-                                <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
-                                <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
-                            </div>
-                            <span>Email</span>
-                        </div>
-                        <div class="hero-stat" *ngIf="record && record.phoneNumbers">
-                            <strong>{{ record.phoneNumbers.length || 0 }}</strong>
-                            <span>Phone numbers</span>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="lv-score-arc lv-score-arc--sm" [style]="'--score: ' + (record.qualityScore || 0)" [attr.data-tier]="getScoreTier(record.qualityScore || 0)">
-                                <span class="lv-score-arc__value">{{ record.qualityScore || 0 }}</span>
-                            </div>
-                            <span>Lead score</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="lead-visual-card primary-card">
-                        <div class="lead-card-top-row">
-                            <div>
-                                <p class="lead-card-company">{{ record.companyName || 'Unknown Company' }}</p>
-                                <h2>{{ record.fullName || 'Unknown Contact' }}</h2>
-                            </div>
-                            <div class="lv-score-arc lv-score-arc--sm" [style]="'--score: ' + (record.qualityScore || 0)" [attr.data-tier]="getScoreTier(record.qualityScore || 0)">
-                                <span class="lv-score-arc__value">{{ record.qualityScore || 0 }}</span>
-                            </div>
-                        </div>
-                        <p class="lead-card-title" *ngIf="record.title">{{ record.title }}</p>
-                        <div class="lead-card-email" *ngIf="record.email || record.emailMasked">
-                            <a *ngIf="record.email; else cardMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
-                                {{ record.email }}
-                            </a>
-                            <ng-template #cardMaskedEmail>
-                                {{ record.emailMasked }}
-                            </ng-template>
-                            <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
-                            <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
-                        </div>
-                        <div class="capabilities preview-capabilities" *ngIf="record.capabilities?.length">
-                            <span class="capability-pill" *ngFor="let capability of record.capabilities">
-                                {{ capability }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="lead-visual-card secondary-card">
-                        <p class="visual-caption">Contact snapshot</p>
-                        <h3>{{ record.city || record.state || record.country || 'Location not listed' }}</h3>
-                        <p class="visual-copy">
-                            <span *ngIf="record.linkedInUrl; else noLinkedIn">LinkedIn available for outreach and research.</span>
-                            <ng-template #noLinkedIn>Direct outreach data is available below.</ng-template>
-                        </p>
-                        <div class="intent-pills">
-                            <span class="intent-pill" *ngIf="record.email || record.emailMasked">Email ready</span>
-                            <span class="intent-pill" *ngIf="record.phoneNumbers?.length">Phone ready</span>
-                            <span class="intent-pill" *ngIf="record.sector">{{ record.sector }}</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="recommendation-section">
-                <div class="section-heading">
-                    <span class="eyebrow">Need help approaching this contact?</span>
-                    <h2>Get a recommended approach for $1</h2>
-                </div>
-                <div class="action-card recommendation-card">
-                    <p class="recommendation-copy"> Tell us what you want to do with this contact and we will load the recommendation tied to your purchase. </p>
-                    <div class="recommendation-controls">
-                        <label class="recommendation-label" for="recommendationGoal">What do you want to do?</label>
-                        <select id="recommendationGoal" class="recommendation-select" [ngModel]="recommendationGoal" (ngModelChange)="onRecommendationGoalChange($event)">
-                            <option value="Introduce my service">Introduce my service</option>
-                            <option value="Book a meeting">Book a meeting</option>
-                            <option value="Sell a product">Sell a product</option>
-                            <option value="Start a partnership">Start a partnership</option>
-                            <option value="Recruit">Recruit</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="action-row recommendation-action-row">
-                        <button type="button" class="primary-action-button" [disabled]="recommendationCheckoutInProgress || recommendationLoading" (click)="startRecommendationCheckout()"> Get recommendation for $1 </button>
-                        <button type="button" class="secondary-action-button" [disabled]="recommendationLoading" (click)="loadRecommendation()"> Load recommendation </button>
-                    </div>
-                    <div class="message-stack" *ngIf="recommendationMessage || recommendationErrorMessage">
-                        <p class="action-message" *ngIf="recommendationMessage">
-                            {{ recommendationMessage }}
-                        </p>
-                        <p class="inline-error-message" *ngIf="recommendationErrorMessage">
-                            {{ recommendationErrorMessage }}
-                        </p>
-                    </div>
-                    <div class="recommendation-result-card" *ngIf="recommendation">
-                        <h3>Recommendation</h3>
-                        <p *ngIf="recommendation.summary"><strong>Summary:</strong> {{ recommendation.summary }}</p>
-                        <p *ngIf="recommendation.approach"><strong>Approach:</strong> {{ recommendation.approach }}</p>
-                        <p *ngIf="recommendation.firstMove"><strong>First move:</strong> {{ recommendation.firstMove }}</p>
-                        <p *ngIf="recommendation.caution"><strong>Caution:</strong> {{ recommendation.caution }}</p>
-                        <pre *ngIf="!recommendation.summary && !recommendation.approach && !recommendation.firstMove && !recommendation.caution">{{ recommendation | json }}</pre>
-                    </div>
-                </div>
-            </section>
-            <section class="actions-section">
-                <div class="section-heading">
-                    <span class="eyebrow">Use this lead</span>
-                    <h2>Download or copy</h2>
-                </div>
-                <div class="action-card">
-                    <div class="action-row">
-                        <button type="button" class="secondary-action-button" (click)="downloadCsv()"> Download CSV </button>
-                        <button type="button" class="secondary-action-button" (click)="copyEmail()"> Copy email </button>
-                        <button type="button" class="secondary-action-button" (click)="copyFullRecord()"> Copy full record </button>
-                        <button *ngIf="accessState?.isLoggedIn" type="button" class="primary-action-button" [disabled]="addToToddInProgress" (click)="addToTodd()"> Add to TODD </button>
-                    </div>
-                    <div class="action-row" *ngIf="accessState?.isLoggedIn && leadVaultContact?.email">
-                        <app-email-option-button [contact]="leadVaultContact" (composeInTodd)="onComposeInToddFromLead($event)">
-                        </app-email-option-button>
-                    </div>
-                    <button *ngIf="!accessState?.isLoggedIn" type="button" class="primary-action-button" (click)="signInToTodd()">Sign in to add this lead to TODD</button>
-                    <p class="action-message" *ngIf="accessState?.isLoggedIn && !accessState?.isPaidUser">Free users can keep up to 10 contacts before upgrading.</p>
-                    <div class="message-stack" *ngIf="actionMessage || actionErrorMessage">
-                        <p class="action-message" *ngIf="actionMessage">
-                            {{ actionMessage }}
-                        </p>
-                        <p class="inline-error-message" *ngIf="actionErrorMessage">
-                            {{ actionErrorMessage }}
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <section class="details-section">
-                <div class="section-heading">
-                    <span class="eyebrow">Record details</span>
-                    <h2>Everything unlocked for this lead</h2>
-                </div>
-                <div class="record-grid">
-                    <div class="record-section">
-                        <h3>Contact</h3>
-                        <p *ngIf="record.title"><strong>Title:</strong> {{ record.title }}</p>
-                        <p *ngIf="record.email || record.emailMasked">
-                            <strong>Email:</strong>
-                            <a *ngIf="record.email; else detailMaskedEmail" class="email-link" [href]="'mailto:' + record.email">
-                                {{ record.email }}
-                            </a>
-                            <ng-template #detailMaskedEmail>
-                                {{ record.emailMasked }}
-                            </ng-template>
-                            <span class="email-status-pill valid" *ngIf="record.emailChecked && !record.emailBlocked"> Valid </span>
-                            <span class="email-status-pill blocked" *ngIf="record.emailBlocked"> Blocked </span>
-                        </p>
-                        <div *ngIf="record.phoneNumbers?.length">
-                            <p *ngFor="let phone of record.phoneNumbers">
-                                <strong>Phone:</strong> {{ phone.phoneNumber || phone }}
-                            </p>
-                        </div>
-                        <p *ngIf="record.linkedInUrl"><strong>LinkedIn:</strong> {{ record.linkedInUrl }}</p>
-                    </div>
-                    <div class="record-section">
-                        <h3>Company</h3>
-                        <p *ngIf="record.company?.name"><strong>Name:</strong> {{ record.company.name }}</p>
-                        <p *ngIf="record.company?.size"><strong>Size:</strong> {{ record.company.size }}</p>
-                        <p *ngIf="record.company?.description"><strong>Description:</strong> {{ record.company.description }}</p>
-                    </div>
-                    <div class="record-section">
-                        <h3>Location</h3>
-                        <p *ngIf="record.city"><strong>City:</strong> {{ record.city }}</p>
-                        <p *ngIf="record.state"><strong>State:</strong> {{ record.state }}</p>
-                        <p *ngIf="record.country"><strong>Country:</strong> {{ record.country }}</p>
-                        <p *ngIf="record.sector"><strong>Sector:</strong> {{ record.sector }}</p>
-                    </div>
-                </div>
-                <div *ngIf="hasMapLocation()" class="mt-2">
-                    <app-contact-map [longitude]="getMapLongitude()!" [latitude]="getMapLatitude()!">
-                    </app-contact-map>
-                </div>
-            </section>
-            <section class="capabilities-section" *ngIf="record.capabilities?.length || record.company?.capabilities?.length">
-                <div class="section-heading">
-                    <span class="eyebrow">Capabilities</span>
-                    <h2>What this company does</h2>
-                </div>
-                <div class="capabilities" *ngIf="record.capabilities?.length">
-                    <span class="capability-pill" *ngFor="let capability of record.capabilities">
-                        {{ capability }}
-                    </span>
-                </div>
-                <div class="capabilities company-capabilities" *ngIf="record.company?.capabilities?.length">
-                    <span class="capability-pill" *ngFor="let capability of record.company.capabilities">
-                        {{ capability }}
-                    </span>
-                </div>
-            </section>
-        </div>
+<!-- Unlocked lead (design_handoff_music_leadvault_network 14e; 14l on iPhone). -->
+<main class="lvf">
+  <a class="lv-link lvf-back" routerLink="/">
+    <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Lead Vault
+  </a>
+
+  <div class="lvf-gate" *ngIf="errorMessage">
+    <p class="lv-error" role="alert">{{ errorMessage }}</p>
+    <button *ngIf="!accessState?.isLoggedIn" type="button" class="lv-btn lv-btn--primary" (click)="signInToTodd()">Sign in with TODD</button>
+  </div>
+  <app-preloader [isLoading]="isLoading" message="Loading full record…"></app-preloader>
+
+  <ng-container *ngIf="!isLoading && fullRecord as record">
+    <div class="lvf-head">
+      <div class="lvf-head__copy">
+        <span class="lv-tag" data-tint="green">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+          Unlocked lead
+        </span>
+        <h1>{{ record.companyName || 'Unknown Company' }}</h1>
+        <p class="lvf-who"><strong>{{ record.fullName || 'Unknown Contact' }}</strong><span *ngIf="record.title"> · {{ record.title }}</span></p>
+      </div>
+      <div class="lvf-actions">
+        <button type="button" class="lv-btn" (click)="downloadCsv()">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download CSV
+        </button>
+        <button type="button" class="lv-btn" (click)="copyEmail()">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy email
+        </button>
+        <button type="button" class="lv-btn" (click)="copyFullRecord()">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>Copy full record
+        </button>
+        <button *ngIf="accessState?.isLoggedIn" type="button" class="lv-btn lv-btn--primary" [disabled]="addToToddInProgress" (click)="addToTodd()">
+          <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>{{ addToToddInProgress ? 'Adding…' : 'Add to TODD' }}
+        </button>
+        <button *ngIf="!accessState?.isLoggedIn" type="button" class="lv-btn lv-btn--primary" (click)="signInToTodd()">Sign in to add this lead to TODD</button>
+      </div>
     </div>
-</div>
+
+    <div class="lvf-stats">
+      <div class="lvf-stat lvf-stat--email">
+        <span>Email</span>
+        <strong>
+          <a *ngIf="record.email; else maskedEmail" [href]="'mailto:' + record.email">{{ record.email }}</a>
+          <ng-template #maskedEmail>{{ record.emailMasked || 'No email' }}</ng-template>
+          <em class="lvf-valid" *ngIf="record.emailChecked && !record.emailBlocked">Valid</em>
+          <em class="lvf-valid lvf-valid--blocked" *ngIf="record.emailBlocked">Blocked</em>
+        </strong>
+      </div>
+      <div class="lvf-stat">
+        <span>Phone numbers</span>
+        <strong class="lvf-big">{{ record.phoneNumbers.length || 0 }}</strong>
+      </div>
+      <div class="lvf-stat lvf-stat--score">
+        <span class="lv-ring" [style.--v]="record.qualityScore || 0" [attr.data-low]="(record.qualityScore || 0) < 70 ? '' : null"><span>{{ record.qualityScore || 0 }}</span></span>
+        <strong>Lead score</strong>
+      </div>
+    </div>
+
+    <!-- iPhone (14l): one big Add to TODD, a 3-up action grid, then the recommendation row. -->
+    <div class="lvf-phone-actions">
+      <button *ngIf="accessState?.isLoggedIn" type="button" class="lv-btn lv-btn--primary lvf-phone-add" [disabled]="addToToddInProgress" (click)="addToTodd()">
+        <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>{{ addToToddInProgress ? 'Adding…' : 'Add to TODD' }}
+      </button>
+      <button *ngIf="!accessState?.isLoggedIn" type="button" class="lv-btn lv-btn--primary lvf-phone-add" (click)="signInToTodd()">Sign in to add this lead to TODD</button>
+      <div class="lvf-tiles">
+        <button type="button" (click)="downloadCsv()"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>CSV</button>
+        <button type="button" (click)="copyEmail()"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy email</button>
+        <button type="button" (click)="copyFullRecord()"><svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>Copy record</button>
+      </div>
+      <button type="button" class="lvf-rec-row" (click)="scrollToRecommendation()">
+        Get a recommended approach for $1
+        <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="lvf-messages" *ngIf="actionMessage || actionErrorMessage" aria-live="polite">
+      <p class="lvf-message" *ngIf="actionMessage">{{ actionMessage }}</p>
+      <p class="lvf-message lvf-message--error" *ngIf="actionErrorMessage">{{ actionErrorMessage }}</p>
+    </div>
+
+    <div class="lvf-compose" *ngIf="accessState?.isLoggedIn && leadVaultContact?.email">
+      <span>Write to {{ record.fullName || 'this contact' }}</span>
+      <app-email-option-button [contact]="leadVaultContact" (composeInTodd)="onComposeInToddFromLead($event)"></app-email-option-button>
+    </div>
+
+    <div class="lvf-details">
+      <section class="lvf-card">
+        <h2>Contact</h2>
+        <dl>
+          <ng-container *ngIf="record.title"><dt>Title</dt><dd>{{ record.title }}</dd></ng-container>
+          <ng-container *ngFor="let phone of record.phoneNumbers"><dt>Phone</dt><dd>{{ phone.phoneNumber || phone }}</dd></ng-container>
+          <ng-container *ngIf="record.linkedInUrl"><dt>LinkedIn</dt><dd>{{ record.linkedInUrl }}</dd></ng-container>
+        </dl>
+      </section>
+      <section class="lvf-card">
+        <h2>Company</h2>
+        <dl>
+          <ng-container *ngIf="record.company?.name"><dt>Name</dt><dd>{{ record.company.name }}</dd></ng-container>
+          <ng-container *ngIf="record.company?.size"><dt>Size</dt><dd>{{ record.company.size }}</dd></ng-container>
+          <ng-container *ngIf="record.company?.description"><dt>About</dt><dd>{{ record.company.description }}</dd></ng-container>
+        </dl>
+      </section>
+      <section class="lvf-card">
+        <h2>Location</h2>
+        <dl>
+          <ng-container *ngIf="record.city"><dt>City</dt><dd>{{ record.city }}</dd></ng-container>
+          <ng-container *ngIf="record.state"><dt>State</dt><dd>{{ record.state }}</dd></ng-container>
+          <ng-container *ngIf="record.country"><dt>Country</dt><dd>{{ record.country }}</dd></ng-container>
+          <ng-container *ngIf="record.sector"><dt>Sector</dt><dd>{{ record.sector }}</dd></ng-container>
+        </dl>
+      </section>
+    </div>
+
+    <div class="lvf-map" *ngIf="hasMapLocation()">
+      <app-contact-map [longitude]="getMapLongitude()!" [latitude]="getMapLatitude()!"></app-contact-map>
+    </div>
+
+    <div class="lvf-bottom">
+      <section class="lvf-does" *ngIf="record.capabilities?.length || record.company?.capabilities?.length || (accessState?.isLoggedIn && !accessState?.isPaidUser)">
+        <ng-container *ngIf="record.capabilities?.length || record.company?.capabilities?.length">
+          <h2 class="lv-eyebrow">What this company does</h2>
+          <div class="lv-chips">
+            <span class="lv-chip" *ngFor="let capability of record.capabilities">{{ capability }}</span>
+            <span class="lv-chip" *ngFor="let capability of record.company?.capabilities">{{ capability }}</span>
+          </div>
+        </ng-container>
+        <p class="lvf-note" *ngIf="accessState?.isLoggedIn && !accessState?.isPaidUser">Free users can keep up to 10 contacts before upgrading.</p>
+      </section>
+
+      <section class="lvf-rec" id="lvf-recommendation" aria-labelledby="lvf-rec-title">
+        <p class="lv-eyebrow lv-eyebrow--cyan">Need help approaching this contact?</p>
+        <h2 id="lvf-rec-title">Get a recommended approach for $1</h2>
+        <p class="lvf-rec__ask" id="lvf-goal-label">What do you want to do?</p>
+        <div class="lvf-goals" role="radiogroup" aria-labelledby="lvf-goal-label">
+          <button type="button" *ngFor="let goal of goals" role="radio" class="lv-chip" [class.is-on]="recommendationGoal === goal" [attr.aria-checked]="recommendationGoal === goal" (click)="onRecommendationGoalChange(goal)">{{ goal }}</button>
+        </div>
+        <div class="lvf-rec__actions">
+          <button type="button" class="lv-btn lv-btn--primary" [disabled]="recommendationCheckoutInProgress || recommendationLoading" (click)="startRecommendationCheckout()">Get recommendation for $1</button>
+          <button type="button" class="lv-btn lv-btn--on-surface" [disabled]="recommendationLoading" (click)="loadRecommendation()">{{ recommendationLoading ? 'Loading…' : 'Load recommendation' }}</button>
+        </div>
+        <div class="lvf-messages" *ngIf="recommendationMessage || recommendationErrorMessage" aria-live="polite">
+          <p class="lvf-message lvf-message--plain" *ngIf="recommendationMessage">{{ recommendationMessage }}</p>
+          <p class="lvf-message lvf-message--error" *ngIf="recommendationErrorMessage">{{ recommendationErrorMessage }}</p>
+        </div>
+        <div class="lvf-rec__result" *ngIf="recommendation">
+          <div *ngIf="recommendation.summary"><h3>Summary</h3><p>{{ recommendation.summary }}</p></div>
+          <div *ngIf="recommendation.approach"><h3>Approach</h3><p>{{ recommendation.approach }}</p></div>
+          <div *ngIf="recommendation.firstMove"><h3>First move</h3><p>{{ recommendation.firstMove }}</p></div>
+          <div *ngIf="recommendation.caution"><h3>Caution</h3><p>{{ recommendation.caution }}</p></div>
+          <pre *ngIf="!recommendation.summary && !recommendation.approach && !recommendation.firstMove && !recommendation.caution">{{ recommendation | json }}</pre>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+</main>

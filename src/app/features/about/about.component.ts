@@ -3,6 +3,7 @@ import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from '../../shared/seo.service';
+import { VERSION } from '../../version';
 
 @Component({
   selector: 'app-about',
@@ -12,6 +13,8 @@ import { SeoService } from '../../shared/seo.service';
   styleUrl: './about.component.css',
 })
 export class AboutComponent implements OnInit, OnDestroy {
+  readonly version = VERSION.version;
+
   private schemaScript: HTMLScriptElement | null = null;
 
   constructor(

@@ -1,10 +1,9 @@
-<div class="cancel-page">
-    <div class="cancel-card">
-        <div class="cancel-badge">Purchase not completed</div>
-        <h1>Lead Vault purchase cancelled</h1>
-        <p class="cancel-copy"> No charge was made and the lead remains locked. You can return to the Lead Vault and unlock it whenever you're ready. </p>
-        <div class="cancel-actions">
-            <a routerLink="/" class="primary-action-button">Back to Lead Vault</a>
-        </div>
-    </div>
-</div>
+<!-- Checkout result pages share one card (cancel-page.component.css). -->
+<main class="lvs">
+  <section class="lvs-card">
+    <span class="lv-tag" data-tint="red">Purchase not completed</span>
+    <h1>Lead Vault purchase cancelled</h1>
+    <p class="lvs-copy">No charge was made and the lead remains locked. You can return to the Lead Vault and unlock it whenever you're ready.</p>
+    <div class="lvs-actions"><a routerLink="/" class="lv-btn lv-btn--primary">Back to Lead Vault</a></div>
+  </section>
+</main>
