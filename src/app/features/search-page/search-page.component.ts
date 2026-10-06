@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeadVaultAssistantSignalService } from '../../services/lead-vault-assistant-signal.service';
-import { LeadVaultApiService } from '../../services/lead-vault-api.service';
+import { LeadVaultApiService, LeadVaultValidationUsage } from '../../services/lead-vault-api.service';
 import { LeadVaultAuthService } from '../../services/lead-vault-auth.service';
 import { LeadVaultViewerService } from '../../services/lead-vault-viewer.service';
 import { Observable, firstValueFrom, from, of } from 'rxjs';
@@ -131,6 +131,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     matched: boolean;
     record?: LeadVaultSearchResultItem | null;
   } | null = null;
+  /** Today's email checks for this user, from the last validation response. */
+  validationUsage: LeadVaultValidationUsage | null = null;
 
   constructor (
     private readonly leadVaultService: LeadVaultApiService,
@@ -395,6 +397,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.leadVaultService.validateEmail( email, idToken ).subscribe( {
       next: ( response ) => {
+        this.validationUsage = response?.usage || this.validationUsage;
         this.validationResult = {
           verdict: String( response?.verdict || 'Invalid' ),
           score: Math.round( Number( response?.score || 0 ) * 100 ),
@@ -408,7 +411,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         const code = error?.error?.code;
 
-        if ( code === 'daily_limit_exceeded' || code === 'insufficient_credits' ) {
+        if ( code === 'user_daily_limit_exceeded' ) {
+          // This user is out for today; validation still works for others.
+          this.validationUsage = error?.error?.usage || this.validationUsage;
+          this.errorMessage = error?.error?.message || "You've used today's email checks. They reset tomorrow.";
+        } else if ( code === 'daily_limit_exceeded' || code === 'insufficient_credits' ) {
           this.validateEmailUnavailable = true;
           this.mode = 'search';
           this.errorMessage = 'Email validation is temporarily unavailable - try Search Lead Vault instead.';
@@ -433,6 +440,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     if ( this.validationState === 'valid' ) return 'Valid email';
     if ( this.validationState === 'risky' ) return 'Risky email';
     return 'Invalid email';
+  }
+
+  /** "7 of 10 email checks left today", or '' when unknown or unlimited. */
+  get validationAllowance (): string {
+    const usage = this.validationUsage;
+    if ( !usage || usage.unlimited || usage.limit == null || usage.remaining == null ) return '';
+    return `${usage.remaining} of ${usage.limit} email check${usage.limit === 1 ? '' : 's'} left today`;
   }
 
   /** The 14a headline shows until there is something to look at. */

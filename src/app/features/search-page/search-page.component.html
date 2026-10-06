@@ -23,7 +23,10 @@
       </button>
     </div>
     <p class="lv-helper" *ngIf="showHero">{{ mode === 'validate' ? 'See if an email address is valid.' : 'Search researched contacts by company, sector, capability, or buyer need.' }}</p>
+    <p class="lv-helper lv-allowance" *ngIf="mode === 'validate' && validationAllowance">{{ validationAllowance }}</p>
   </form>
+
+  <p class="tt-made-by lv-made-by" *ngIf="showHero"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/find/entities/todd/logo-bw-icon.png" alt="" /></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a href="https://find.taliferro.tech" target="_blank" rel="noopener">Also from us <span class="um-logo" data-app="find" aria-hidden="true"></span><strong>Find</strong></a></p>
 
   <p class="lv-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</p>
 

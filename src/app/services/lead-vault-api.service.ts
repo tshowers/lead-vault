@@ -3,6 +3,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+/** Today's email checks for the signed-in user (null limit = unlimited). */
+export interface LeadVaultValidationUsage {
+  used: number;
+  limit: number | null;
+  remaining: number | null;
+  unlimited?: boolean;
+}
+
 export type LeadVaultAccessLevel =
   | 'master-tenant'
   | 'suite-subscriber'
@@ -81,6 +89,7 @@ export class LeadVaultApiService {
     record?: any;
     code?: string;
     message?: string;
+    usage?: LeadVaultValidationUsage;
   }> {
     return this.http.post<{
       success: boolean;
@@ -90,6 +99,7 @@ export class LeadVaultApiService {
       record?: any;
       code?: string;
       message?: string;
+      usage?: LeadVaultValidationUsage;
     }>( this.buildApiUrl( '/lead-vault/validate-email' ), {
       email: this.normalizeEmail( email )
     }, {

@@ -338,3 +338,7 @@
   .lv-card .lv-ring { --size: 48px; }
   .lv-card h2 { font-size: 19px; }
 }
+
+/* Powered by TODD · Also from us Find, under the start-state composer. */
+.lv-made-by { margin: 4px 0 0 !important; padding-left: 26px; }
+@media (max-width: 760px) { .lv-made-by { padding-left: 4px; } }
