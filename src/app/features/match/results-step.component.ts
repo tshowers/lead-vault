@@ -79,9 +79,9 @@ import { MatchResult } from './match.models';
       <div class="lvm-results__bar">
         <p><b>{{ totalLabel() }}</b> · sorted by score</p>
         <div class="lvm-results__actions">
-          <button type="button" class="lv-btn" [disabled]="!rows().length" (click)="exportCsv()">
+          <button type="button" class="lv-btn" [disabled]="!rows().length" (click)="exportOrSignIn()" [attr.aria-label]="exportLabel()">
             <svg class="lv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-            <span class="lvm-hide-phone">Export CSV</span>
+            <span class="lvm-hide-phone">{{ exportLabel() }}</span>
           </button>
         </div>
       </div>
@@ -180,7 +180,15 @@ export class ResultsStepComponent {
     this.authService.signIn( '/match/results' );
   }
 
-  protected exportCsv (): void {
+  /** Export is for signed-in users; signing in is free and it's where most people sign up. */
+  protected readonly exportLabel = computed( () => this.signedIn() ? 'Export CSV' : 'Sign in to export' );
+
+  protected exportOrSignIn (): void {
+    if ( this.signedIn() ) this.exportCsv();
+    else this.signIn();
+  }
+
+  private exportCsv (): void {
     const header = [ 'Company', 'Contact', 'Title', 'Location', 'Industry', 'Email (masked)', 'Score', 'Matched on', 'Contacts at company', 'Record' ];
     const origin = typeof window === 'undefined' ? '' : window.location.origin;
     const lines = this.store.results().map( ( row ) => [

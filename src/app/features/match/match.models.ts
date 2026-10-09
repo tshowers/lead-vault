@@ -78,6 +78,8 @@ export interface MatchSearchResponse {
   limit: number;
   results: MatchResult[];
   hasMore: boolean;
+  /** Signed-out visitor and more matches exist: they only ever get page one. */
+  moreRequiresSignIn?: boolean;
 }
 
 export interface BestMatch extends MatchResult {
