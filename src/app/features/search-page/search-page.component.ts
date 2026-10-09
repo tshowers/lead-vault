@@ -9,6 +9,8 @@ import { LeadVaultViewerService } from '../../services/lead-vault-viewer.service
 import { Observable, firstValueFrom, from, of } from 'rxjs';
 import { catchError, concatMap, map, toArray } from 'rxjs/operators';
 import { VERSION } from '../../version';
+import { MatchStore } from '../match/match-store.service';
+import { MatchPath } from '../match/match.models';
 
 /**
  * TRIM, not rewrite - the largest component in this extraction (2,143
@@ -74,6 +76,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   readonly toddHomeUrl = 'https://todd.taliferro.tech';
   readonly appVersion = VERSION;
   readonly viewer$ = inject( LeadVaultViewerService ).viewer$;
+  private readonly matchStore = inject( MatchStore );
 
   readonly placeholderExamples: string[] = [
     'Who is looking to buy technology services',
@@ -450,6 +453,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   /** The 14a headline shows until there is something to look at. */
+  /** 5a entry cards: start Lead Vault Match, carrying typed text into Keywords. */
+  openMatch ( path: MatchPath ): void {
+    this.matchStore.start( path, this.searchQuery );
+    this.router.navigate( [ path === 'match' ? '/match/company' : '/match/criteria' ] );
+  }
+
   get showHero (): boolean {
     return !this.validationResult && !this.results.length && !this.showRecoveryState && !this.errorMessage;
   }

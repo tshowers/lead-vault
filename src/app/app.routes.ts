@@ -7,6 +7,30 @@ export const routes: Routes = [
       import( './features/search-page/search-page.component' ).then( ( m ) => m.SearchPageComponent ),
   },
   {
+    // Lead Vault Match (design_handoff_lead_vault_match): company › criteria › results.
+    path: 'match',
+    loadComponent: () =>
+      import( './features/match/match-shell.component' ).then( ( m ) => m.MatchShellComponent ),
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'criteria' },
+      {
+        path: 'company',
+        loadComponent: () =>
+          import( './features/match/company-step.component' ).then( ( m ) => m.CompanyStepComponent ),
+      },
+      {
+        path: 'criteria',
+        loadComponent: () =>
+          import( './features/match/criteria-step.component' ).then( ( m ) => m.CriteriaStepComponent ),
+      },
+      {
+        path: 'results',
+        loadComponent: () =>
+          import( './features/match/results-step.component' ).then( ( m ) => m.ResultsStepComponent ),
+      },
+    ],
+  },
+  {
     path: 'record/:id',
     loadComponent: () =>
       import( './features/preview-page/preview-page.component' ).then( ( m ) => m.PreviewPageComponent ),

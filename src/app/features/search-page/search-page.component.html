@@ -26,6 +26,25 @@
     <p class="lv-helper lv-allowance" *ngIf="mode === 'validate' && validationAllowance">{{ validationAllowance }}</p>
   </form>
 
+  <!-- Lead Vault Match (design_handoff_lead_vault_match 5a): two more ways in -->
+  <section class="lv-ways" *ngIf="showHero && mode === 'search'" aria-label="More ways to find leads">
+    <button type="button" class="lv-way" (click)="openMatch('criteria')">
+      <span class="lv-way__icon" data-tint="blue" aria-hidden="true">
+        <svg class="lv-icon" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"/></svg>
+      </span>
+      <span class="lv-way__copy"><strong>Refine with criteria</strong><span>Location, industry, NAICS codes and certifications. No company needed.</span></span>
+      <svg class="lv-icon lv-way__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <button type="button" class="lv-way" (click)="openMatch('match')">
+      <span class="lv-way__icon" data-tint="violet" aria-hidden="true">
+        <svg class="lv-icon" viewBox="0 0 24 24"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg>
+      </span>
+      <span class="lv-way__copy"><strong>Match a company</strong><span>Enter a company and its website. We find the best partners for it.</span></span>
+      <svg class="lv-icon lv-way__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <p class="lv-helper lv-ways__helper">Anything typed in the search box carries into the Keywords field if you pick either option.</p>
+  </section>
+
   <p class="tt-made-by lv-made-by" *ngIf="showHero"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/find/entities/todd/logo-bw-icon.png" alt="" /></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a href="https://find.taliferro.tech" target="_blank" rel="noopener">Also from us <span class="um-logo" data-app="find" aria-hidden="true"></span><strong>Find</strong></a></p>
 
   <p class="lv-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</p>

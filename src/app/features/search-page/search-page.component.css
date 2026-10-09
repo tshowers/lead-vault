@@ -342,3 +342,55 @@
 /* Powered by TODD · Also from us Find, under the start-state composer. */
 .lv-made-by { margin: 4px 0 0 !important; padding-left: 26px; }
 @media (max-width: 760px) { .lv-made-by { padding-left: 4px; } }
+
+/* Lead Vault Match entry cards (design_handoff_lead_vault_match 5a). */
+.lv-ways {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.lv-way,
+button.lv-way {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 0;
+  padding: 20px 22px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.lv-way:hover { background: var(--surface2); transform: none; }
+.lv-way:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.lv-way__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--t-blue);
+  color: var(--t-blue-fg);
+}
+
+.lv-way__icon[data-tint="violet"] { background: var(--t-violet); color: var(--t-violet-fg); }
+.lv-way__icon .lv-icon { width: 22px; height: 22px; }
+
+.lv-way__copy { display: grid; gap: 4px; }
+.lv-way__copy strong { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.lv-way__copy span { font-size: 14px; line-height: 1.45; color: var(--muted); }
+.lv-way__arrow { width: 20px; height: 20px; color: var(--muted); }
+
+.lv-ways__helper { grid-column: 1 / -1; }
+
+@media (max-width: 760px) {
+  .lv-ways { grid-template-columns: 1fr; }
+}
