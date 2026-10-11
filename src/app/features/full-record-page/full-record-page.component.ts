@@ -317,7 +317,7 @@ export class FullRecordPageComponent implements OnInit {
     }
 
     if ( !this.accessState.isPaidUser && !this.accessState.canAddContact ) {
-      this.actionErrorMessage = 'Free users can keep up to 10 contacts. Upgrade to add more leads to TODD.';
+      this.actionErrorMessage = 'Adding leads to TODD needs a Network subscription.';
       return;
     }
 
