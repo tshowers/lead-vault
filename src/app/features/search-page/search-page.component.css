@@ -1,12 +1,15 @@
 /* Lead Vault home: 14a (validate, empty), 14b (result), 14c (search), 14h–14j (iPhone). */
-:host { display: block; }
+/* A column filling the rest of the window under the header (app-root is a
+   full-height column on this page, app.component.css), so the footer sits at
+   the bottom on short pages. */
+:host { display: flex; flex-direction: column; flex: 1 0 auto; }
 
 .lv-home {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: min(780px, 100% - 32px);
-  min-height: calc(100vh - 82px);
+  flex: 1 0 auto;
   margin: 0 auto;
   padding: 40px 0 28px;
 }
@@ -280,7 +283,6 @@
 @media (max-width: 760px) {
   .lv-home {
     gap: 16px;
-    min-height: calc(100vh - 66px);
     padding-top: 16px;
   }
 

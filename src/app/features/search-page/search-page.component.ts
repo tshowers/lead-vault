@@ -11,6 +11,8 @@ import { catchError, concatMap, map, toArray } from 'rxjs/operators';
 import { VERSION } from '../../version';
 import { MatchStore } from '../match/match-store.service';
 import { MatchPath } from '../match/match.models';
+import { SiteFooterComponent } from '../../shared/site-footer/site-footer.component';
+import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.component';
 
 /**
  * TRIM, not rewrite - the largest component in this extraction (2,143
@@ -67,7 +69,7 @@ type LeadVaultMode = 'validate' | 'search';
 @Component( {
   selector: 'app-search-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [ AlsoFromUsComponent, SiteFooterComponent, CommonModule, FormsModule, RouterModule],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.css'
 } )
