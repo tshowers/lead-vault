@@ -26,7 +26,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const pageTitle = 'About Lead Vault | Taliferro Tech';
+    const pageTitle = 'About Lead Vault | 16Ahead';
     const description = 'Lead Vault is Taliferro Tech\'s business-lead search tool: find curated, enriched contacts by company, industry, capability, or buying signal, then unlock the full record when you\'re ready.';
     this.title.setTitle(pageTitle);
     this.meta.updateTag({ name: 'description', content: description });
