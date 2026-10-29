@@ -25,7 +25,7 @@ export interface LeadVaultSearchResponse {
   total?: number;
   offset?: number;
   hasMore?: boolean;
-  /** Anonymous caller, more ranked results exist behind a TODD sign-in. */
+  /** Anonymous caller, more ranked results exist behind a 16Ahead sign-in. */
   moreRequiresSignIn?: boolean;
   parsedSearchPlan?: Record<string, string> | null;
 }
@@ -77,7 +77,7 @@ export class LeadVaultApiService {
   }
 
   /**
-   * Requires a signed-in TODD user - this now burns a real, paid email-
+   * Requires a signed-in 16Ahead user - this now burns a real, paid email-
    * validation credit per call, so `idToken` (from
    * LeadVaultAuthService.getIdToken()) is required, not optional.
    */

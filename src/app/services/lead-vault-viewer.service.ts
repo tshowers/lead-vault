@@ -7,7 +7,7 @@ export interface LeadVaultViewer {
   status: 'loading' | 'signed-out' | 'signed-in';
   email: string;
   accessLevel: LeadVaultAccessLevel;
-  /** Master tenant, TODD Suite, or Lead Vault Unlimited - every record opens. */
+  /** Master tenant, 16Ahead Suite, or Lead Vault Unlimited - every record opens. */
   hasFullAccess: boolean;
   freeTrialAvailable: boolean;
   /** Short badge text, e.g. "Master access". */

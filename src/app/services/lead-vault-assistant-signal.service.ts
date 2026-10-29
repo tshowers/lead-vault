@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
  * uses ToddAssistantBusService in Lead Vault (grepped the monorepo's
  * lead-vault-search-page.component.ts): it calls setPageContext,
  * clearPageContext, and emitAssistantActivity - all covered here. This app
- * deliberately doesn't carry TODD's full assistant bus (see Network's own
+ * deliberately doesn't carry 16Ahead's full assistant bus (see Network's own
  * scoping note), so ported calls have nowhere to go. Kept as a same-shaped
  * no-op rather than deleted from each call site to minimize the diff.
  */

@@ -4,7 +4,7 @@ import { Contact } from '../../models/contact.model';
 
 /**
  * NOT a verbatim port of shared/page/email-option-button/email-option-button.component.ts
- * (253 lines) - that original's "Use TODD" and "Email app" buttons both
+ * (253 lines) - that original's "Use 16Ahead" and "Email app" buttons both
  * route through composeWithAi(), which calls EmailService.
  * generateEmailDraftFromEditor() (an OpenAI-backed drafting call) and, for
  * contact lookup by bare email address, OutreachApiService. Both are real
@@ -19,7 +19,7 @@ import { Contact } from '../../models/contact.model';
  * same @Input/@Output surface the full-record page uses, but:
  *  - "Email app" opens a plain mailto: immediately, with a simple
  *    templated subject/body (lead name/company), no AI call.
- *  - "Use TODD" still just emits composeInTodd - the parent
+ *  - "Use 16Ahead" still just emits composeIn16Ahead - the parent
  *    (LeadVaultFullRecordPageComponent) handles it with a cross-app link
  *    to the monorepo's own /compose-email, not an in-app AI draft.
  */
@@ -35,14 +35,14 @@ export class EmailOptionButtonComponent {
   @Input() emailAddress: string | undefined = undefined;
   @Input() displayMode: 'button' | 'icon' = 'button';
 
-  @Output() composeInTodd = new EventEmitter<{ contact: Contact | null; emailAddress: string | undefined; }>();
+  @Output() composeIn16Ahead = new EventEmitter<{ contact: Contact | null; emailAddress: string | undefined; }>();
 
-  onComposeInToddClick ( event?: MouseEvent ): void {
+  onComposeIn16AheadClick ( event?: MouseEvent ): void {
     event?.stopPropagation();
 
     if ( !this.contact && !this.emailAddress ) return;
 
-    this.composeInTodd.emit( { contact: this.contact, emailAddress: this.emailAddress } );
+    this.composeIn16Ahead.emit( { contact: this.contact, emailAddress: this.emailAddress } );
   }
 
   onComposeInNativeClick ( event?: MouseEvent ): void {

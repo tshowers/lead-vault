@@ -28,12 +28,12 @@ import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.comp
  * everything, with two cuts -
  *
  *  1. ToddAssistantBusService -> LeadVaultAssistantSignalService (a no-op
- *     stub, per the extraction convention - this app doesn't carry TODD's
+ *     stub, per the extraction convention - this app doesn't carry 16Ahead's
  *     assistant bus). Call sites are kept as-is rather than deleted, to
  *     minimize the diff against the original.
  *  2. Exit-intent tracking (visibilitychange/beforeunload/pagehide
  *     listeners + sendBeacon to /todd-exit-intent) is CUT entirely. This
- *     is TODD-wide marketing telemetry, not part of Lead Vault's own
+ *     is 16Ahead-wide marketing telemetry, not part of Lead Vault's own
  *     search/validate/unlock behavior - about 150 of the 729 TS lines,
  *     none of which affect what the page actually does for a visitor.
  *
@@ -43,7 +43,7 @@ import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.comp
  * (?momentumPreparedSet=...), placeholder rotation, and recovery pills.
  *
  * Route targets shortened for this app: /lead-vault/record/:id -> /record/:id.
- * The header's "TODD Home" link now points at the monorepo's real
+ * The header's "16Ahead Home" link now points at the monorepo's real
  * production domain (https://app.16ahead.com, confirmed from the
  * monorepo's own environment.prod.ts PLATFORM_URL) rather than this app's
  * own "/" - "/" here IS the Lead Vault search page itself, so a
@@ -75,7 +75,7 @@ type LeadVaultMode = 'validate' | 'search';
 } )
 export class SearchPageComponent implements OnInit, OnDestroy {
   /** The monorepo's real production domain - see header comment. */
-  readonly toddHomeUrl = 'https://app.16ahead.com';
+  readonly appHomeUrl = 'https://app.16ahead.com';
   readonly appVersion = VERSION;
   readonly viewer$ = inject( LeadVaultViewerService ).viewer$;
   private readonly matchStore = inject( MatchStore );

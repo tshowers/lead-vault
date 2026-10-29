@@ -6,7 +6,7 @@ import { LeadVaultAuthService } from './lead-vault-auth.service';
  * Copied from web-products/network's NetworkContactPackService, logic
  * unchanged, auth-swapped to LeadVaultAuthService. Same shared
  * /network/contact-pack/checkout endpoint as Network - this is a
- * tenant-wide TODD contact-capacity gate, not specific to which extracted
+ * tenant-wide 16Ahead contact-capacity gate, not specific to which extracted
  * app triggered it.
  */
 @Injectable( { providedIn: 'root' } )

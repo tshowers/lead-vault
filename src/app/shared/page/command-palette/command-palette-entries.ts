@@ -21,7 +21,7 @@ export const COMMAND_PALETTE_ENTRIES: CommandPaletteEntry[] = [
 
   // --- Other Apps -----------------------------------------------------------
   { id: 'app-maya', label: 'Marketing Assistant', group: 'Other Apps', path: 'https://marketing.16ahead.com', icon: 'assets/find/entities/maya/logo-bw-icon.png', external: true, keywords: ['maya', 'marketing director'] },
-  { id: 'app-todd', label: 'General Assistant', group: 'Other Apps', path: 'https://assistant.16ahead.com', icon: 'assets/find/entities/todd/logo-bw-icon.png', external: true, keywords: ['todd', 'ask todd', 'assistant', 'chat'] },
+  { id: 'app-assistant', label: 'General Assistant', group: 'Other Apps', path: 'https://assistant.16ahead.com', icon: 'assets/find/entities/todd/logo-bw-icon.png', external: true, keywords: ['16ahead', 'assistant', 'chat'] },
   { id: 'app-docs', label: 'Docs', group: 'Other Apps', path: 'https://docs.16ahead.com', icon: 'assets/find/entities/docs/logo-bw-icon.png', external: true, keywords: ['docs', 'documents', 'proposals', 'contracts'] },
   { id: 'app-signature', label: 'Email Signature Builder', group: 'Other Apps', path: 'https://signature.16ahead.com', icon: 'assets/find/entities/email-signature-builder/logo-bw-icon.png', external: true, keywords: ['email signature', 'signature builder'] },
   { id: 'app-image-creator', label: 'Image Creator', group: 'Other Apps', path: 'https://images.16ahead.com', icon: 'assets/find/entities/image-creator/logo-bw-icon.svg', external: true, keywords: ['image creator', 'images', 'generate image', 'logo', 'icon', 'banner'] },

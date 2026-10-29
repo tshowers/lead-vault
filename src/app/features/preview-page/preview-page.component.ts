@@ -91,7 +91,7 @@ export class PreviewPageComponent implements OnInit {
       this.viewerService.viewer$.pipe( filter( ( viewer ) => viewer.status !== 'loading' ) ),
     );
 
-    // Master tenant / TODD Suite / Unlimited: nothing to buy here.
+    // Master tenant / 16Ahead Suite / Unlimited: nothing to buy here.
     if ( this.viewer.hasFullAccess ) {
       this.router.navigate( ['/full', this.recordId], { replaceUrl: true } );
       return;
@@ -101,7 +101,7 @@ export class PreviewPageComponent implements OnInit {
     this.loadPreview();
   }
 
-  signInToTodd (): void {
+  signInTo16Ahead (): void {
     this.authService.signIn( `/record/${this.recordId}` );
   }
 
@@ -257,7 +257,7 @@ export class PreviewPageComponent implements OnInit {
       return queryEmail;
     }
 
-    // A signed-in TODD user's own email beats a stale one left in storage
+    // A signed-in 16Ahead user's own email beats a stale one left in storage
     // from an earlier anonymous purchase.
     const signedInEmail = this.normalizeEmail( this.viewer?.email || this.authService.getCurrentUserEmailSync() );
     if ( signedInEmail ) {

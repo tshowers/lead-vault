@@ -18,7 +18,7 @@ import { hostedLoginUrl } from '@taliferro/ui/platform/hosted-login.model';
  * Lead Vault's search/preview/purchase flow is keyed mostly by email, not
  * by a signed-in tenant - only the "Add to Contact" and unlimited-
  * subscription checkout flows on the full-record page actually need a
- * signed-in TODD user.
+ * signed-in 16Ahead user.
  */
 @Injectable( { providedIn: 'root' } )
 export class LeadVaultAuthService {
@@ -36,7 +36,7 @@ export class LeadVaultAuthService {
     } );
   }
 
-  /** Matches TODD's own AuthService.getUserId() shape - components ported
+  /** Matches 16Ahead's own AuthService.getUserId() shape - components ported
    * from features/* call this by name, so keeping the signature identical
    * means the rest of a component's logic ports unchanged. */
   getUserId (): Observable<string> {
@@ -118,7 +118,7 @@ export class LeadVaultAuthService {
   }
 
   /**
-   * Same rule as TODD's `users.service.ts`'s `getTenantLoggedInContactInfo` -
+   * Same rule as 16Ahead's `users.service.ts`'s `getTenantLoggedInContactInfo` -
    * not a guess, kept identical to Network's own resolution.
    */
   async resolveTenantId ( uid: string ): Promise<string> {

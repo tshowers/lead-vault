@@ -1,14 +1,14 @@
 /**
  * Copied from web-products/network's models/contact.model.ts (itself a
- * trimmed version of TODD's full Contact interface) and extended with the
+ * trimmed version of 16Ahead's full Contact interface) and extended with the
  * extra fields lead-vault-full-record-page's mapLeadToContact() writes when
- * adding a purchased lead to TODD as a real Contact - fields Network's own
+ * adding a purchased lead to 16Ahead as a real Contact - fields Network's own
  * pages never needed (type, acquisitionSource, dateAdded, lastContacted,
  * recentCampaign, connectionDetails, engagements, interactions,
  * statusHistory, contactValue, subscriber, top-level email/sector/
  * linkedInUrl, and Company's description/phoneNumbers/emailAddresses/
  * other/url/sicCode/status/shared). Still grows field-by-field as needed,
- * not a full port of TODD's interface.
+ * not a full port of 16Ahead's interface.
  */
 export interface EmailAddress {
   emailAddress: string;

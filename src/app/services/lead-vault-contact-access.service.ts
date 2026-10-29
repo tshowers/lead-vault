@@ -15,7 +15,7 @@ export interface ContactAccessState {
  * Copied from web-products/network's NetworkContactAccessService (itself
  * ported from the monorepo's contact-access.service.ts, trimmed of the
  * Cypress test-auth override), auth-swapped to LeadVaultAuthService. The
- * full-record page's addToTodd() reads isLoggedIn/isPaidUser/
+ * full-record page's addTo16Ahead() reads isLoggedIn/isPaidUser/
  * canAddContact off this exactly the way Network's pages do, so no further
  * trimming was needed - this is already the shape this extraction needs.
  */

@@ -15,7 +15,7 @@ const PLAN_NAMES: Record<LeadVaultAccessLevel, string> = {
 
 /**
  * Header pill next to the theme pill: "Sign in" for visitors, or the
- * signed-in TODD email plus what it unlocks (master / Suite / Unlimited /
+ * signed-in 16Ahead email plus what it unlocks (master / Suite / Unlimited /
  * free reveal / pay per lead), with sign-out behind a click.
  */
 @Component( {

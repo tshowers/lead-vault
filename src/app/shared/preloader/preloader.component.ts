@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /**
- * Trimmed replacement for TODD's PreloaderComponent (1975 lines of CSS for
+ * Trimmed replacement for 16Ahead's PreloaderComponent (1975 lines of CSS for
  * a branded orbit-animation loading screen, in the original) - Network
  * just needs a plain spinner, not a full port of that.
  */

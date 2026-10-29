@@ -26,7 +26,7 @@ import { LoggerService } from '../../services/logger.service';
  *    Network's NetworkDataService, trimmed to addContact() + a new
  *    getContactIdByEmail() lookup). ContactService was only used for
  *    changeContact()+resetReason() ahead of an in-app /compose-email
- *    navigation - see onComposeInToddFromLead() below for the cross-app
+ *    navigation - see onComposeIn16AheadFromLead() below for the cross-app
  *    replacement.
  *  - ContactAccessService -> LeadVaultContactAccessService (copy of
  *    Network's NetworkContactAccessService, auth-swapped - already the
@@ -34,12 +34,12 @@ import { LoggerService } from '../../services/logger.service';
  *  - NetworkContactPackService -> LeadVaultContactPackService (copy,
  *    auth-swapped).
  *  - Cypress test-auth override (isCypressRuntime/getCypressContacts/
- *    setCypressContacts, and the branch in addToTodd() that used them) is
+ *    setCypressContacts, and the branch in addTo16Ahead() that used them) is
  *    dropped, matching the same trim NetworkContactAccessService already
  *    made for its own Cypress override.
- *  - onComposeInToddFromLead(): the original set ContactService's
+ *  - onComposeIn16AheadFromLead(): the original set ContactService's
  *    in-memory selected contact, then router.navigate(['/compose-email'])
- *    - an in-app TODD route. Per the plan's decision, Outreach/email-
+ *    - an in-app 16Ahead route. Per the plan's decision, Outreach/email-
  *    composition isn't part of either extracted product, so this is now a
  *    real cross-app navigation to the monorepo's own production domain
  *    (https://app.16ahead.com/compose-email, confirmed from the
@@ -64,7 +64,7 @@ import { LoggerService } from '../../services/logger.service';
 } )
 export class FullRecordPageComponent implements OnInit {
   /** The monorepo's real production domain - see header comment. */
-  readonly toddHomeUrl = 'https://app.16ahead.com';
+  readonly appHomeUrl = 'https://app.16ahead.com';
 
   recordId = '';
   purchaserEmail = '';
@@ -79,7 +79,7 @@ export class FullRecordPageComponent implements OnInit {
   recommendationMessage = '';
   recommendationErrorMessage = '';
   recommendation: any = null;
-  addToToddInProgress = false;
+  addTo16AheadInProgress = false;
   accessState: ContactAccessState | null = null;
 
   fullRecord: {
@@ -162,7 +162,7 @@ export class FullRecordPageComponent implements OnInit {
       return;
     }
 
-    // Wait for Firebase to restore the session so a signed-in TODD user's
+    // Wait for Firebase to restore the session so a signed-in 16Ahead user's
     // email (and the ID token the interceptor sends) is available.
     await this.authService.whenReady();
     this.purchaserEmail = this.resolvePurchaserEmail();
@@ -301,11 +301,11 @@ export class FullRecordPageComponent implements OnInit {
     }
   }
 
-  signInToTodd (): void {
+  signInTo16Ahead (): void {
     this.authService.signIn( `/full/${this.recordId}` );
   }
 
-  async addToTodd (): Promise<void> {
+  async addTo16Ahead (): Promise<void> {
     this.actionErrorMessage = '';
     this.actionMessage = '';
 
@@ -326,7 +326,7 @@ export class FullRecordPageComponent implements OnInit {
       return;
     }
 
-    this.addToToddInProgress = true;
+    this.addTo16AheadInProgress = true;
 
     try {
       const newContact = this.mapLeadToContact( this.fullRecord );
@@ -363,7 +363,7 @@ export class FullRecordPageComponent implements OnInit {
 
       this.actionErrorMessage = error?.message || 'Unable to add this lead to 16Ahead.';
     } finally {
-      this.addToToddInProgress = false;
+      this.addTo16AheadInProgress = false;
     }
   }
 
@@ -372,7 +372,7 @@ export class FullRecordPageComponent implements OnInit {
    * the monorepo's real /compose-email in the same tab, with best-effort
    * prefill query params.
    */
-  onComposeInToddFromLead ( event?: { contact: Contact | null; emailAddress: string | undefined; } ): void {
+  onComposeIn16AheadFromLead ( event?: { contact: Contact | null; emailAddress: string | undefined; } ): void {
     if ( !this.accessState?.isLoggedIn ) {
       this.actionErrorMessage = 'Sign in to email this lead in 16Ahead.';
       return;
@@ -391,7 +391,7 @@ export class FullRecordPageComponent implements OnInit {
     if ( contact.company?.name ) params.set( 'company', contact.company.name );
 
     const query = params.toString();
-    window.location.href = `${this.toddHomeUrl}/compose-email${query ? `?${query}` : ''}`;
+    window.location.href = `${this.appHomeUrl}/compose-email${query ? `?${query}` : ''}`;
   }
 
   private mapLeadToContact ( record: NonNullable<FullRecordPageComponent['fullRecord']> ): Contact {

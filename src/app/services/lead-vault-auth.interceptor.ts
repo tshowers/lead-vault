@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 import { LeadVaultAuthService } from './lead-vault-auth.service';
 
 /**
- * Sends the signed-in TODD user's Firebase ID token with every Lead Vault
- * API call. The backend verifies it to recognize master-tenant, TODD Suite,
+ * Sends the signed-in 16Ahead user's Firebase ID token with every Lead Vault
+ * API call. The backend verifies it to recognize master-tenant, 16Ahead Suite,
  * and Lead Vault Unlimited users, so their records open without a per-lead
  * purchase. Anonymous visitors go out unchanged. A call that already set its
  * own Authorization header (validate-email) is left alone.

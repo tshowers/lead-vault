@@ -12,7 +12,7 @@ export interface Toast {
 }
 
 /**
- * Trimmed replacement for TODD's NotificationService - same `show(header,
+ * Trimmed replacement for 16Ahead's NotificationService - same `show(header,
  * description, type)` call shape so ported components don't need their
  * calls rewritten, but the queue/pending-notifier registration machinery
  * (built for the old component-reference pattern) is dropped in favor of

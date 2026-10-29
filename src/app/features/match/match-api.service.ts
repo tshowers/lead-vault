@@ -46,7 +46,7 @@ export class MatchApiService {
       .pipe( map( ( response ) => response.best ) );
   }
 
-  /** Six-digit 2022 NAICS codes from the same list TODD's picker uses. */
+  /** Six-digit 2022 NAICS codes from the same list 16Ahead's picker uses. */
   naicsOptions (): Observable<NaicsOption[]> {
     this.naics$ ??= this.http.get( 'assets/lead-vault/naics.csv', { responseType: 'text' } ).pipe(
       map( ( csv ) => csv.split( /\r?\n/ ).flatMap( ( line ) => {
