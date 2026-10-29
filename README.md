@@ -6,7 +6,7 @@
 
 Lead Vault is a standalone Angular app for finding and researching business contacts when a company needs a better starting point for outreach. It searches curated and enriched lead data by company, industry, capability, location, or buying signal, then lets a user review a masked contact preview before deciding whether to unlock the full record.
 
-Live at [lead-vault.taliferro.tech](https://lead-vault.taliferro.tech/), part of the Taliferro Tech product suite.
+Live at [lead-vault.16ahead.com](https://lead-vault.16ahead.com/), part of the Taliferro Tech product suite.
 
 ## What it's for
 
