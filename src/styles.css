@@ -30,7 +30,7 @@ h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 
-/* Old 16Ahead names still referenced by a few ported components. */
+/* Old platform variable names still referenced by a few ported components. */
 :root {
   --tl-blue: var(--t-cyan-fg);
   --tl-blue-mid: var(--t-cyan-fg);
@@ -248,3 +248,15 @@ input.lv-field {
 .lv-field.lv-field--on-surface { background: var(--bg); }
 .lv-field::placeholder { color: var(--muted); }
 .lv-field:focus-visible { outline: 2px solid var(--blue) !important; outline-offset: 2px; }
+
+/* Landing-page header mark: the 16Ahead dial around Lead Vault's black-and-white icon. */
+.ah-dial { position: relative; display: block; border-radius: 0; color: var(--text); }
+.ah-dial svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; }
+.ah-dial .ah-dial__accent { stroke: #6d4aff; }
+.ah-dial__glyph {
+  position: absolute;
+  inset: 30%;
+  background: currentColor;
+  -webkit-mask: url("assets/find/entities/lead-vault/logo-bw-icon.png") center / contain no-repeat;
+  mask: url("assets/find/entities/lead-vault/logo-bw-icon.png") center / contain no-repeat;
+}
