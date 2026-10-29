@@ -42,7 +42,7 @@ import { LoggerService } from '../../services/logger.service';
  *    - an in-app TODD route. Per the plan's decision, Outreach/email-
  *    composition isn't part of either extracted product, so this is now a
  *    real cross-app navigation to the monorepo's own production domain
- *    (https://todd.taliferro.tech/compose-email, confirmed from the
+ *    (https://app.16ahead.com/compose-email, confirmed from the
  *    monorepo's own environment.prod.ts PLATFORM_URL - not a guess). Best-
  *    effort query params (email/firstName/lastName/company) are attached
  *    in case the monorepo's compose-email flow ever reads them, but there
@@ -64,7 +64,7 @@ import { LoggerService } from '../../services/logger.service';
 } )
 export class FullRecordPageComponent implements OnInit {
   /** The monorepo's real production domain - see header comment. */
-  readonly toddHomeUrl = 'https://todd.taliferro.tech';
+  readonly toddHomeUrl = 'https://app.16ahead.com';
 
   recordId = '';
   purchaserEmail = '';
@@ -169,7 +169,7 @@ export class FullRecordPageComponent implements OnInit {
 
     if ( !this.purchaserEmail ) {
       this.isLoading = false;
-      this.errorMessage = 'Sign in with TODD, or open this lead from the email you purchased it with.';
+      this.errorMessage = 'Sign in with 16Ahead, or open this lead from the email you purchased it with.';
       return;
     }
 
@@ -317,7 +317,7 @@ export class FullRecordPageComponent implements OnInit {
     }
 
     if ( !this.accessState.isPaidUser && !this.accessState.canAddContact ) {
-      this.actionErrorMessage = 'Adding leads to TODD needs a Network subscription.';
+      this.actionErrorMessage = 'Adding leads to 16Ahead needs a Network subscription.';
       return;
     }
 
@@ -334,19 +334,19 @@ export class FullRecordPageComponent implements OnInit {
       const tenantId = uid ? await this.authService.resolveTenantId( uid ) : '';
 
       if ( !tenantId ) {
-        this.actionErrorMessage = 'Unable to resolve your TODD tenant. Please sign in again.';
+        this.actionErrorMessage = 'Unable to resolve your 16Ahead tenant. Please sign in again.';
         return;
       }
 
       const existingId = await this.dataService.getContactIdByEmail( tenantId, newContact.email || '' );
 
       if ( existingId ) {
-        this.actionMessage = 'This lead is already in TODD.';
+        this.actionMessage = 'This lead is already in 16Ahead.';
         return;
       }
 
       await this.dataService.addContact( tenantId, newContact );
-      this.actionMessage = 'Lead added to TODD.';
+      this.actionMessage = 'Lead added to 16Ahead.';
       await this.refreshAccessState();
     } catch ( error: any ) {
       if ( this.contactPackService.isContactLimitError( error ) ) {
@@ -361,7 +361,7 @@ export class FullRecordPageComponent implements OnInit {
         return;
       }
 
-      this.actionErrorMessage = error?.message || 'Unable to add this lead to TODD.';
+      this.actionErrorMessage = error?.message || 'Unable to add this lead to 16Ahead.';
     } finally {
       this.addToToddInProgress = false;
     }
@@ -374,7 +374,7 @@ export class FullRecordPageComponent implements OnInit {
    */
   onComposeInToddFromLead ( event?: { contact: Contact | null; emailAddress: string | undefined; } ): void {
     if ( !this.accessState?.isLoggedIn ) {
-      this.actionErrorMessage = 'Sign in to email this lead in TODD.';
+      this.actionErrorMessage = 'Sign in to email this lead in 16Ahead.';
       return;
     }
 
@@ -759,7 +759,7 @@ export class FullRecordPageComponent implements OnInit {
         this.recommendationErrorMessage = '';
         this.isLoading = false;
         this.errorMessage = error?.status === 403
-          ? `No access to this lead for ${this.purchaserEmail}. Sign in with a TODD Suite account, or unlock it from the preview.`
+          ? `No access to this lead for ${this.purchaserEmail}. Sign in with a 16Ahead Suite account, or unlock it from the preview.`
           : error?.error?.message ||
             error?.message ||
             'Lead Vault full record failed.';

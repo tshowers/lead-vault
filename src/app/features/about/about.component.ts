@@ -32,10 +32,10 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: pageTitle });
     this.meta.updateTag({ property: 'og:description', content: description });
-    this.meta.updateTag({ property: 'og:url', content: 'https://lead-vault.taliferro.tech/about' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://lead-vault.16ahead.com/about' });
     this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
-    this.seo.setCanonical('https://lead-vault.taliferro.tech/about');
+    this.seo.setCanonical('https://lead-vault.16ahead.com/about');
     this.addStructuredData();
   }
 
@@ -61,14 +61,14 @@ export class AboutComponent implements OnInit, OnDestroy {
         },
         {
           '@type': 'SoftwareApplication',
-          '@id': 'https://lead-vault.taliferro.tech/#software',
+          '@id': 'https://lead-vault.16ahead.com/#software',
           name: 'Lead Vault',
-          url: 'https://lead-vault.taliferro.tech/',
+          url: 'https://lead-vault.16ahead.com/',
           description: 'Lead Vault is a business-lead search and enrichment tool: search curated contacts by company, industry, capability, or buying signal, preview a masked teaser for free, and unlock the full record when you need it.',
           applicationCategory: 'BusinessApplication',
           applicationSubCategory: 'Lead generation',
           operatingSystem: 'Web',
-          image: 'https://lead-vault.taliferro.tech/assets/lead-vault/hero.webp',
+          image: 'https://lead-vault.16ahead.com/assets/lead-vault/hero.webp',
           creator: { '@id': 'https://taliferro.com/#organization' },
           publisher: { '@id': 'https://taliferro.com/#organization' },
         },

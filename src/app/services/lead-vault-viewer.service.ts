@@ -21,7 +21,7 @@ const SIGNED_OUT: LeadVaultViewer = { ...LOADING, status: 'signed-out' };
 
 const ACCESS_LABELS: Record<LeadVaultAccessLevel, string> = {
   'master-tenant': 'Master access',
-  'suite-subscriber': 'TODD Suite · full access',
+  'suite-subscriber': '16Ahead Suite · full access',
   'unlimited-subscriber': 'Unlimited · full access',
   'free-trial-available': '1 free reveal',
   'none': 'Pay per lead',

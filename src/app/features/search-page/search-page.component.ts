@@ -44,7 +44,7 @@ import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.comp
  *
  * Route targets shortened for this app: /lead-vault/record/:id -> /record/:id.
  * The header's "TODD Home" link now points at the monorepo's real
- * production domain (https://todd.taliferro.tech, confirmed from the
+ * production domain (https://app.16ahead.com, confirmed from the
  * monorepo's own environment.prod.ts PLATFORM_URL) rather than this app's
  * own "/" - "/" here IS the Lead Vault search page itself, so a
  * self-referential "home" link would be confusing.
@@ -75,7 +75,7 @@ type LeadVaultMode = 'validate' | 'search';
 } )
 export class SearchPageComponent implements OnInit, OnDestroy {
   /** The monorepo's real production domain - see header comment. */
-  readonly toddHomeUrl = 'https://todd.taliferro.tech';
+  readonly toddHomeUrl = 'https://app.16ahead.com';
   readonly appVersion = VERSION;
   readonly viewer$ = inject( LeadVaultViewerService ).viewer$;
   private readonly matchStore = inject( MatchStore );
@@ -258,8 +258,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.preparedSetStatus = String( preparedSet?.status || '' ).trim();
         this.preparedSetCandidateCount = Number( preparedSet?.candidateCount || candidates.length || 0 );
         this.preparedSetMessage = this.preparedSetCandidateCount > 0
-          ? `TODD staged ${this.preparedSetCandidateCount} lead candidate${this.preparedSetCandidateCount === 1 ? '' : 's'} for this momentum push.`
-          : 'TODD did not find enough qualified leads to stage automatically.';
+          ? `16Ahead staged ${this.preparedSetCandidateCount} lead candidate${this.preparedSetCandidateCount === 1 ? '' : 's'} for this momentum push.`
+          : '16Ahead did not find enough qualified leads to stage automatically.';
         this.results = this.normalizeResults( candidates.map( ( candidate: any ) => ( {
           id: String( candidate?.recordId || candidate?.id || '' ).trim(),
           teaserName: String( candidate?.teaserName || '' ).trim(),
@@ -279,7 +279,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.preparedSetStatus = 'error';
         this.preparedSetCandidateCount = 0;
         this.preparedSetMessage = '';
-        this.errorMessage = error?.error?.message || error?.message || 'TODD could not load the prepared lead set.';
+        this.errorMessage = error?.error?.message || error?.message || '16Ahead could not load the prepared lead set.';
         this.publishPageContext();
       }
     } );

@@ -149,7 +149,7 @@ export class PreviewPageComponent implements OnInit {
         if ( response?.accessSource === 'free-trial-available' ) {
           this.hasAccess = false;
           this.freeTrialAvailable = true;
-          this.accessMessage = 'Your TODD account has one free reveal. Use it on this lead, or save it and unlock for $29.';
+          this.accessMessage = 'Your 16Ahead account has one free reveal. Use it on this lead, or save it and unlock for $29.';
           return;
         }
 

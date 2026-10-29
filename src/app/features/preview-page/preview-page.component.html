@@ -106,11 +106,11 @@
         <p>One-time purchase. No subscription required.</p>
         <p>Already purchased? We'll open the record immediately.</p>
       </div>
-      <p class="lvp-trust lvp-narrow">One-time purchase.<ng-container *ngIf="viewer?.status === 'signed-out'"> Suite subscriber? <button type="button" class="lvp-inline-signin" (click)="signInToTodd()">Sign in with TODD</button></ng-container></p>
+      <p class="lvp-trust lvp-narrow">One-time purchase.<ng-container *ngIf="viewer?.status === 'signed-out'"> Suite subscriber? <button type="button" class="lvp-inline-signin" (click)="signInToTodd()">Sign in with 16Ahead</button></ng-container></p>
 
       <div class="lvp-suite lvp-wide" *ngIf="viewer?.status === 'signed-out'">
-        <p>TODD Suite subscriber? Sign in and every Lead Vault record opens in full.</p>
-        <button type="button" class="lv-btn lv-btn--on-surface" (click)="signInToTodd()">Sign in with TODD</button>
+        <p>16Ahead Suite subscriber? Sign in and every Lead Vault record opens in full.</p>
+        <button type="button" class="lv-btn lv-btn--on-surface" (click)="signInToTodd()">Sign in with 16Ahead</button>
       </div>
       <p class="lvp-suite lvp-wide" *ngIf="viewer?.status === 'signed-in'">
         Signed in as <strong>{{ viewer?.email }}</strong> · {{ viewer?.label }}

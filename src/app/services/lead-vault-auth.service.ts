@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { Observable, shareReplay, switchMap, of } from 'rxjs';
+import { hostedLoginUrl } from '@taliferro/ui/platform/hosted-login.model';
 
 /**
  * Trimmed, purpose-built auth service for the standalone Lead Vault app -
@@ -91,8 +92,7 @@ export class LeadVaultAuthService {
   signIn ( returnUrl?: string ): void {
     const state = crypto.randomUUID();
     sessionStorage.setItem( 'lead_vault_hosted_login_pending', JSON.stringify( { state, returnUrl } ) );
-    const params = new URLSearchParams( { client: 'lead-vault-web', state } );
-    window.location.href = `https://todd.taliferro.tech/login?${params.toString()}`;
+    window.location.href = hostedLoginUrl( 'lead-vault-web', state );
   }
 
   consumePendingLogin ( state: string | null ): { returnUrl?: string } | null {

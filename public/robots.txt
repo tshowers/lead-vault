@@ -7,4 +7,4 @@ Disallow: /success
 Disallow: /cancel
 Disallow: /unlimited-success
 
-Sitemap: https://lead-vault.taliferro.tech/sitemap.xml
+Sitemap: https://lead-vault.16ahead.com/sitemap.xml

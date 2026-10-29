@@ -66,9 +66,9 @@ import { MatchResult } from './match.models';
             <div class="lvm-best__body">
               <span class="lvm-best__tag">✦ AI best match</span>
               <h2>See which one the AI would pick</h2>
-              <p class="lvm-best__reason">Sign in with TODD and the AI reads these results and explains its single best pick.</p>
+              <p class="lvm-best__reason">Sign in with 16Ahead and the AI reads these results and explains its single best pick.</p>
             </div>
-            <button type="button" class="lv-btn lvm-btn--blue" (click)="signIn()">Sign in with TODD</button>
+            <button type="button" class="lv-btn lvm-btn--blue" (click)="signIn()">Sign in with 16Ahead</button>
           </section>
         }
         @case ( 'error' ) {
@@ -120,7 +120,7 @@ import { MatchResult } from './match.models';
         </div>
       } @else if ( signedOutAndCapped() ) {
         <div class="lvm-more-row">
-          <button type="button" class="lv-btn" (click)="signIn()">Sign in with TODD to see all {{ store.total().toLocaleString() }}</button>
+          <button type="button" class="lv-btn" (click)="signIn()">Sign in with 16Ahead to see all {{ store.total().toLocaleString() }}</button>
         </div>
       }
     </main>

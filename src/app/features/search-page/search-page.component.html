@@ -45,7 +45,7 @@
     <p class="lv-helper lv-ways__helper">Anything typed in the search box carries into the Keywords field if you pick either option.</p>
   </section>
 
-  <p class="tt-made-by lv-made-by" *ngIf="showHero"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/find/entities/todd/logo-bw-icon.png" alt="" /></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a appAlsoFromUs></a></p>
+  <p class="tt-made-by lv-made-by" *ngIf="showHero"><a href="https://app.16ahead.com" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/find/entities/todd/logo-bw-icon.png" alt="" /></span>Powered by <strong>16Ahead</strong></a><i aria-hidden="true"></i><a appAlsoFromUs></a></p>
 
   <p class="lv-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</p>
 
@@ -81,7 +81,7 @@
     <ng-container *ngIf="viewer$ | async as viewer">
       <div class="lv-results__meta">
         <span>Showing {{ results.length }} of {{ totalResults || results.length }}<ng-container *ngIf="!viewer.hasFullAccess"> · free masked previews</ng-container><ng-container *ngIf="viewer.hasFullAccess"> · {{ viewer.label }}</ng-container></span>
-        <button *ngIf="moreRequiresSignIn && viewer.status === 'signed-out'" type="button" class="lv-results__signin" (click)="signInForMoreResults()">Sign in with TODD to see all</button>
+        <button *ngIf="moreRequiresSignIn && viewer.status === 'signed-out'" type="button" class="lv-results__signin" (click)="signInForMoreResults()">Sign in with 16Ahead to see all</button>
       </div>
 
       <div class="lv-grid">

@@ -35,10 +35,10 @@ export class HelpComponent implements OnInit {
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: pageTitle });
     this.meta.updateTag({ property: 'og:description', content: description });
-    this.meta.updateTag({ property: 'og:url', content: 'https://lead-vault.taliferro.tech/help' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://lead-vault.16ahead.com/help' });
     this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
     this.meta.updateTag({ name: 'twitter:description', content: description });
-    this.seo.setCanonical('https://lead-vault.taliferro.tech/help');
+    this.seo.setCanonical('https://lead-vault.16ahead.com/help');
   }
 
   readonly steps: HelpStep[] = [
